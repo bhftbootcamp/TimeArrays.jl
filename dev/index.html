@@ -65,14 +65,14 @@ julia&gt; ta_linear_fill(nan_values)
  TimeTick(2024-01-06T00:00:00, 6.0)
  TimeTick(2024-01-08T00:00:00, 8.0)</code></pre><p>Here we calculate the average price between two time series of high and low prices.</p><pre><code class="language-julia hljs">using TimeArrays
 
-julia&gt; high_prices = ta_high_prices_sample_data()
+julia&gt; high_prices = ta_high_price_sample_data()
 2416-element TimeArray{DateTime, Float64}:
  TimeTick(2023-01-01T00:00:08.998, 0.2457)
  TimeTick(2023-01-01T00:00:43.315, 0.2458)
  ⋮
  TimeTick(2023-01-01T23:59:43.246, 0.25)
 
-julia&gt; low_prices = ta_low_prices_sample_data()
+julia&gt; low_prices = ta_low_price_sample_data()
 2396-element TimeArray{DateTime, Float64}:
  TimeTick(2023-01-01T00:00:08.995, 0.2456)
  TimeTick(2023-01-01T00:00:43.319, 0.2457)
@@ -93,7 +93,7 @@ Visualized with <a src=https://github.com/bhftbootcamp/LightweightCharts.jl>Ligh
 <br><p>You can smooth the price data by using <a href="https://en.wikipedia.org/wiki/Moving_average">Simple Moving Average</a> function.</p><pre><code class="language-julia hljs">using Dates
 using TimeArrays
 
-julia&gt; prices = ta_prices_sample_data()
+julia&gt; prices = ta_price_sample_data()
 7777-element TimeArray{DateTime, Float64}:
  TimeTick(2024-04-01T00:00:00.661, 0.6501)
  TimeTick(2024-04-01T00:05:57.481, 0.6505)
@@ -131,7 +131,7 @@ function ohlc(x::AbstractVector{&lt;:Number})
     end
 end
 
-julia&gt; prices = ta_prices_sample_data()
+julia&gt; prices = ta_price_sample_data()
 7777-element TimeArray{DateTime, Float64}:
  TimeTick(2024-04-01T00:00:00.661, 0.6501)
  TimeTick(2024-04-01T00:05:57.481, 0.6505)
@@ -147,4 +147,4 @@ julia&gt; ta_resample(ohlc, prices, Hour(2); closed = CLOSED_RIGHT, label = LABE
 <img src=assets/price_to_candles.png>
 
 Visualized with <a src=https://github.com/bhftbootcamp/LightweightCharts.jl>LightweightCharts.jl</a>.
-</div></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="pages/interface/">Types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 5 June 2024 18:46">Wednesday 5 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</div></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="pages/interface/">Types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 5 June 2024 18:50">Wednesday 5 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
