@@ -159,6 +159,37 @@ function ta_sma(t_array::TimeArray, window::Union{Integer,Period})
     return ta_rolling(mean, t_array, window)
 end
 
+function ta_ema(t_array::TimeArray{T,V}, window::Integer) where {T,V}
+    len = length(t_array)
+    V2 = promote_nan(V)
+    values = map(ta_value, t_array)
+    new_ticks = Vector{TimeTick{T,V2}}(undef, len)
+
+    coef = 2.0 / (window + 1)
+    for i in 1:min(window - 1, len)
+        t = ta_timestamp(t_array[i])
+        v = mean(view(values, 1:i))
+        new_ticks[i] = TimeTick{T,V2}(t, v)
+    end
+
+    for i in window:len
+        t = ta_timestamp(t_array[i])
+        value = ta_value(new_ticks[i - 1])
+        v = values[i] = coef * (values[i] - value) + value
+        new_ticks[i] = TimeTick{T,V2}(t, v)
+    end
+
+    return TimeArray{T,V2}(new_ticks, len)
+end
+
+function ta_wma(t_array::TimeArray{T,V}, window::Integer) where {T,V}
+    coef = 1.0 / sum(1:window)
+    return ta_rolling(t_array, window) do slice
+        length(slice) != window && return ta_nan(V)
+        return sum([i * coef * slice[i] for i in 1:window])
+    end
+end
+
 """
     ta_lag(t_array::TimeArray, n::Integer) -> TimeArray
 
