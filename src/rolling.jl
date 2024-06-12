@@ -4,7 +4,7 @@
     ta_rolling(f::Function, t_array::TimeArray{T,V}, n::Integer) -> TimeArray
     ta_rolling(f::Function, t_array::TimeArray{T,V}, p::Period) -> TimeArray
 
-Applies function `f` in a sliding window of length `n` or period `p` to the elements of `t_array`.
+Applies function `f` in a sliding window with window size `n` or period `p` to the elements of `t_array`.
 Function `f` must accept a vector with elements of type `V` as input and return a new value, which will be assigned to the corresponding timestamp of each window.
 
 Function signature:
@@ -115,7 +115,7 @@ end
     ta_sma(t_array::TimeArray, n::Integer) -> TimeArray
     ta_sma(t_array::TimeArray, p::Period) -> TimeArray
 
-Applies [Simple Moving Average](https://en.wikipedia.org/wiki/Moving_average) algorithm of length `n` or period `p` to the elements of `t_array`.
+Applies [Simple Moving Average](https://en.wikipedia.org/wiki/Moving_average) algorithm with window size `n` or period `p` to the elements of `t_array`.
 
 ## Examples
 
@@ -159,29 +159,80 @@ function ta_sma(t_array::TimeArray, window::Union{Integer,Period})
     return ta_rolling(mean, t_array, window)
 end
 
+"""
+    ta_ema(t_array::TimeArray, window::Integer)
+
+Applies [Exponential Moving Average](https://en.wikipedia.org/wiki/Exponential_smoothing) algorithm with window size `n` to the elements of `t_array`.
+
+## Examples
+```jldoctest
+julia> using Dates
+
+julia> t_array = TimeArray([
+           TimeTick(DateTime("2024-01-02"), 1.0),
+           TimeTick(DateTime("2024-01-03"), 2.0),
+           TimeTick(DateTime("2024-01-05"), 3.0),
+           TimeTick(DateTime("2024-01-06"), 4.0),
+           TimeTick(DateTime("2024-01-09"), 5.0),
+       ]);
+
+julia> ta_ema(t_array, 3)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 1.0)
+ TimeTick(2024-01-03T00:00:00, 1.5)
+ TimeTick(2024-01-05T00:00:00, 2.25)
+ TimeTick(2024-01-06T00:00:00, 3.125)
+ TimeTick(2024-01-09T00:00:00, 4.0625)
+```
+"""
 function ta_ema(t_array::TimeArray{T,V}, window::Integer) where {T,V}
     len = length(t_array)
     V2 = promote_nan(V)
     values = map(ta_value, t_array)
     new_ticks = Vector{TimeTick{T,V2}}(undef, len)
 
-    coef = 2.0 / (window + 1)
-    for i in 1:min(window - 1, len)
-        t = ta_timestamp(t_array[i])
-        v = mean(view(values, 1:i))
-        new_ticks[i] = TimeTick{T,V2}(t, v)
+    alpha = 2.0 / (window + 1)
+    for i in 2:len
+        values[i] = mean(view(values, 1:i))
     end
 
-    for i in window:len
+    new_ticks[1] = t_array[1]
+    for i in 2:len
         t = ta_timestamp(t_array[i])
-        value = ta_value(new_ticks[i - 1])
-        v = values[i] = coef * (values[i] - value) + value
+        v = ta_value(t_array[i])
+        v = values[i] = (1 - alpha) * values[i - 1] + alpha * v
         new_ticks[i] = TimeTick{T,V2}(t, v)
     end
 
     return TimeArray{T,V2}(new_ticks, len)
 end
 
+"""
+    ta_wma(t_array::TimeArray, window::Integer)
+
+Applies [Weighted Moving Average](https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average) algorithm with window size `n` to the elements of `t_array`.
+
+## Examples
+```jldoctest
+julia> using Dates
+
+julia> t_array = TimeArray([
+           TimeTick(DateTime("2024-01-02"), 1.0),
+           TimeTick(DateTime("2024-01-03"), 2.0),
+           TimeTick(DateTime("2024-01-05"), 3.0),
+           TimeTick(DateTime("2024-01-06"), 4.0),
+           TimeTick(DateTime("2024-01-09"), 5.0),
+       ]);
+
+julia> ta_wma(t_array, 3)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, NaN)
+ TimeTick(2024-01-05T00:00:00, 2.333333333333333)
+ TimeTick(2024-01-06T00:00:00, 3.333333333333333)
+ TimeTick(2024-01-09T00:00:00, 4.333333333333333)
+```
+"""
 function ta_wma(t_array::TimeArray{T,V}, window::Integer) where {T,V}
     coef = 1.0 / sum(1:window)
     return ta_rolling(t_array, window) do slice
