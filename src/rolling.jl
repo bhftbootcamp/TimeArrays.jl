@@ -29,8 +29,8 @@ julia> t_array = TimeArray([
 
 julia> ta_rolling(sum, t_array, 3)
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-01T00:00:00, NaN)
- TimeTick(2024-01-03T00:00:00, NaN)
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
  TimeTick(2024-01-04T00:00:00, 6.0)
  TimeTick(2024-01-07T00:00:00, 9.0)
  TimeTick(2024-01-09T00:00:00, 12.0)
@@ -45,7 +45,7 @@ julia> t_array = TimeArray([
 
 julia> ta_rolling(sum, t_array, Day(3))
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-03T00:00:00, 3.0)
  TimeTick(2024-01-04T00:00:00, 5.0)
  TimeTick(2024-01-07T00:00:00, 4.0)
@@ -60,15 +60,9 @@ function ta_rolling(f::Function, t_array::TimeArray{T,V}, window::Integer) where
     values = map(ta_value, t_array)
     new_ticks = Vector{TimeTick{T,V2}}(undef, len)
 
-    for i in 1:min(window - 1, len)
+    for i in 1:len
         t = ta_timestamp(t_array[i])
-        v = ta_nan(V2)
-        new_ticks[i] = TimeTick{T,V2}(t, v)
-    end
-
-    for i in window:len
-        t = ta_timestamp(t_array[i])
-        v = f(view(values, (i - window + 1):i))
+        v = f(view(values, max(i - window + 1, 1):i))
         new_ticks[i] = TimeTick{T,V2}(t, v)
     end
 
@@ -98,11 +92,9 @@ function ta_rolling(f::Function, t_array::TimeArray{T,V}, window::Period) where 
 
         value = if l_index > 0
             f(view(values, l_index+1:r_index))
-        elseif l_index == 0
+        else
             l_index = -1
             f(view(values, 1:r_index))
-        else
-            ta_nan(V2)
         end
 
         new_ticks[r_index] =TimeTick{T,V2}(r_timestamp, value)
@@ -148,15 +140,27 @@ julia> t_array = TimeArray([
 
 julia> ta_sma(t_array, Day(3))
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-02T00:00:00, 1.0)
  TimeTick(2024-01-03T00:00:00, 1.5)
  TimeTick(2024-01-05T00:00:00, 2.5)
  TimeTick(2024-01-06T00:00:00, 3.5)
  TimeTick(2024-01-09T00:00:00, 5.0)
 ```
 """
-function ta_sma(t_array::TimeArray, window::Union{Integer,Period})
-    return ta_rolling(mean, t_array, window)
+function ta_sma end
+
+function ta_sma(t_array::TimeArray{T,V}, window::Integer) where {T,V}
+    return ta_rolling(t_array, window) do slice
+        length(slice) < window && return ta_nan(V)
+        return mean(slice)
+    end
+end
+
+function ta_sma(t_array::TimeArray{T,V}, window::Period) where {T,V}
+    return ta_rolling(t_array, window) do slice
+        isempty(slice) && return ta_nan(V)
+        return mean(slice)
+    end
 end
 
 """
@@ -186,31 +190,20 @@ julia> ta_ema(t_array, 3)
 ```
 """
 function ta_ema(t_array::TimeArray{T,V}, window::Integer) where {T,V}
-    len = length(t_array)
-    V2 = promote_nan(V)
-    values = map(ta_value, t_array)
-    new_ticks = Vector{TimeTick{T,V2}}(undef, len)
-
-    alpha = 2.0 / (window + 1)
-    @views for i in 2:len
-        values[i] = mean(values[max(i - window + 1, 1):i])
+    prev_value = ta_value(t_array[begin])
+    return ta_rolling(t_array, window) do slice
+        length(slice) == 1 && return slice[begin]
+        alpha = 2.0 / (window + 1)
+        prev_value = (1 - alpha) * prev_value + alpha * slice[end]
+        return prev_value
     end
-
-    new_ticks[1] = t_array[1]
-    for i in 2:len
-        t = ta_timestamp(t_array[i])
-        v = ta_value(t_array[i])
-        v = values[i] = (1 - alpha) * values[i - 1] + alpha * v
-        new_ticks[i] = TimeTick{T,V2}(t, v)
-    end
-
-    return TimeArray{T,V2}(new_ticks, len)
 end
 
 """
-    ta_wma(t_array::TimeArray, window::Integer)
+    ta_wma(t_array::TimeArray, n::Integer)
+    ta_wma(t_array::TimeArray, p::Period)
 
-Applies [Weighted Moving Average](https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average) algorithm with window size `n` to the elements of `t_array`.
+Applies [Weighted Moving Average](https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average) algorithm with window size `n` or period `p` to the elements of `t_array`.
 
 ## Examples
 ```jldoctest
@@ -231,14 +224,36 @@ julia> ta_wma(t_array, 3)
  TimeTick(2024-01-05T00:00:00, 2.333333333333333)
  TimeTick(2024-01-06T00:00:00, 3.333333333333333)
  TimeTick(2024-01-09T00:00:00, 4.333333333333333)
+
+julia> ta_wma(t_array, Day(3))
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 1.0)
+ TimeTick(2024-01-03T00:00:00, 1.6666666666666665)
+ TimeTick(2024-01-05T00:00:00, 2.6666666666666665)
+ TimeTick(2024-01-06T00:00:00, 3.6666666666666665)
+ TimeTick(2024-01-09T00:00:00, 5.0)
 ```
 """
+function ta_wma end
+
 function ta_wma(t_array::TimeArray{T,V}, window::Integer) where {T,V}
     coef = 1.0 / sum(1:window)
     return ta_rolling(t_array, window) do slice
         length(slice) != window && return ta_nan(V)
         _sum = 0
         for i in 1:window
+            _sum += i * slice[i]
+        end
+        return coef * _sum
+    end
+end
+
+function ta_wma(t_array::TimeArray{T,V}, window::Period) where {T,V}
+    return ta_rolling(t_array, window) do slice
+        isempty(slice) && return ta_nan(V)
+        coef = 1.0 / sum(1:length(slice))
+        _sum = 0
+        for i in eachindex(slice)
             _sum += i * slice[i]
         end
         return coef * _sum
