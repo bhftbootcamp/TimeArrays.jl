@@ -164,7 +164,7 @@ function ta_sma(t_array::TimeArray{T,V}, window::Period) where {T,V}
 end
 
 """
-    ta_ema(t_array::TimeArray, window::Integer)
+    ta_ema(t_array::TimeArray, window::Integer) -> TimeArray
 
 Applies [Exponential Moving Average](https://en.wikipedia.org/wiki/Exponential_smoothing) algorithm with window size `n` to the elements of `t_array`.
 
@@ -200,8 +200,8 @@ function ta_ema(t_array::TimeArray{T,V}, window::Integer) where {T,V}
 end
 
 """
-    ta_wma(t_array::TimeArray, n::Integer)
-    ta_wma(t_array::TimeArray, p::Period)
+    ta_wma(t_array::TimeArray, n::Integer) -> TimeArray
+    ta_wma(t_array::TimeArray, p::Period) -> TimeArray
 
 Applies [Weighted Moving Average](https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average) algorithm with window size `n` or period `p` to the elements of `t_array`.
 
