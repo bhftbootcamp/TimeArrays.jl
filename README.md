@@ -138,7 +138,7 @@ Visualized with [LightweightCharts.jl](https://github.com/bhftbootcamp/Lightweig
 
 <br>
 
-You can smooth the price data by using [Simple Moving Average](https://en.wikipedia.org/wiki/Moving_average) function.
+You can smooth the price data by using different [Moving Average](https://en.wikipedia.org/wiki/Moving_average) algorithms.
 
 ```julia
 using Dates
