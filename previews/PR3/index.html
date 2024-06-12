@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · TimeArrays.jl</title><meta name="title" content="Home · TimeArrays.jl"/><meta property="og:title" content="Home · TimeArrays.jl"/><meta property="twitter:title" content="Home · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/"/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script><link href="assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#Usage"><span>Usage</span></a></li></ul></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="pages/interface/">Types</a></li><li><a class="tocitem" href="pages/arithmetic/">Arithmetic</a></li><li><a class="tocitem" href="pages/array/">Replace &amp; Fill</a></li><li><a class="tocitem" href="pages/rolling/">Rolling window</a></li><li><a class="tocitem" href="pages/resample/">Resample</a></li></ul></li><li><span class="tocitem">For Developers</span><ul><li><a class="tocitem" href="pages/custom_types/">Custom types</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><img src=assets/animation_light.gif><h1 id="TimeArrays.jl"><a class="docs-heading-anchor" href="#TimeArrays.jl">TimeArrays.jl</a><a id="TimeArrays.jl-1"></a><a class="docs-heading-anchor-permalink" href="#TimeArrays.jl" title="Permalink"></a></h1><p>TimeArrays simplifies working with time series data. It offers features like basic math operations, sliding window techniques, data resampling, and handling of missing values.</p><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><p>To install TimeArrays, simply use the Julia package manager:</p><pre><code class="language-julia hljs">] add TimeArrays</code></pre><h2 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h2><p>In this example we perform math operations on several sets of time series.</p><pre><code class="language-julia hljs">using Dates
+using TimeArrays
+
+a = TimeArray{DateTime,Float64}([
+    TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+    TimeTick(DateTime(&quot;2024-01-02&quot;), 4.0),
+    TimeTick(DateTime(&quot;2024-01-05&quot;), 2.0),
+    TimeTick(DateTime(&quot;2024-01-07&quot;), 5.0),
+])
+
+b = TimeArray{DateTime,Float64}([
+    (DateTime(&quot;2024-01-02&quot;), 4.0),
+    (DateTime(&quot;2024-01-06&quot;), 2.0),
+    (DateTime(&quot;2024-01-10&quot;), 1.0),
+])
+
+c = TimeArray{DateTime,Float64}([
+    DateTime(&quot;2024-01-01&quot;) =&gt; 2.0,
+    DateTime(&quot;2024-01-09&quot;) =&gt; 5.0,
+    DateTime(&quot;2024-01-11&quot;) =&gt; 4.0,
+])
+
+julia&gt; 2(a * b) + b / c
+8-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-02T00:00:00, 34.0)
+ ⋮
+ TimeTick(2024-01-11T00:00:00, 10.25)</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Since our implementation of arithmetic operations between elements of two TimeArray&#39;s is somewhat different from the usual work with arrays, a diagram is provided below that shows how exactly the elements of the time series are related to each other. For more information see <a href="https://bhftbootcamp.github.io/TimeArrays.jl/stable/pages/arithmetic/">arithmetic section</a> in documentation.</p></div></div><pre>
+
+ time:     - - - 1 - - - - 2 - - - - 3 - - - - 4 - - - - 5 - - - - 6 - - - - 7 - - - >
+ 
+                2.0                 4.0﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉⤵                   6.0
+ t_array1:       ● - - - - - - - - - ● - - - - - - - - - - - - - - - - - - - ● - - - >
+                 ┊                   ┊                   ┊                   ┊
+    +       [2.0 + NaN]         [4.0 + 3.0]         [4.0 + 5.0]         [6.0 + 5.0]
+                 ┊                   ┊                   ┊                   ┊
+ t_array2:       X                   ● - - - - - - - - - ● - - - - - - - - - - - - - >
+                NaN                 3.0                 5.0 ﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍⤴
+ 
+ result:         ● - - - - - - - - - ● - - - - - - - - - ● - - - - - - - - - ● - - - > 
+                NaN                 7.0                 9.0                11.0
+
+</pre><p>TimeArrays can also deal with missing values.</p><pre><code class="language-julia hljs">using Dates
+using TimeArrays
+
+nan_values = TimeArray{DateTime,Float64}([
+    TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+    TimeTick(DateTime(&quot;2024-01-04&quot;), NaN),
+    TimeTick(DateTime(&quot;2024-01-06&quot;), NaN),
+    TimeTick(DateTime(&quot;2024-01-08&quot;), 8.0),
+])
+
+julia&gt; ta_forward_fill(nan_values)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-04T00:00:00, 8.0)
+ TimeTick(2024-01-06T00:00:00, 8.0)
+ TimeTick(2024-01-08T00:00:00, 8.0)
+
+julia&gt; ta_linear_fill(nan_values)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-04T00:00:00, 4.0)
+ TimeTick(2024-01-06T00:00:00, 6.0)
+ TimeTick(2024-01-08T00:00:00, 8.0)</code></pre><p>Here we calculate the average price between two time series of high and low prices.</p><pre><code class="language-julia hljs">using TimeArrays
+
+julia&gt; high_prices = ta_high_price_sample_data()
+2416-element TimeArray{DateTime, Float64}:
+ TimeTick(2023-01-01T00:00:08.998, 0.2457)
+ TimeTick(2023-01-01T00:00:43.315, 0.2458)
+ ⋮
+ TimeTick(2023-01-01T23:59:43.246, 0.25)
+
+julia&gt; low_prices = ta_low_price_sample_data()
+2396-element TimeArray{DateTime, Float64}:
+ TimeTick(2023-01-01T00:00:08.995, 0.2456)
+ TimeTick(2023-01-01T00:00:43.319, 0.2457)
+ ⋮
+ TimeTick(2023-01-01T23:59:43.252, 0.2499)
+
+julia&gt; (low_prices + high_prices) / 2
+3930-element TimeArray{DateTime, Float64}:
+ TimeTick(2023-01-01T00:00:08.995, NaN)
+ TimeTick(2023-01-01T00:00:08.998, 0.24565)
+ ⋮
+ TimeTick(2023-01-01T23:59:43.252, 0.24995)</code></pre><div align=right>
+<img src=assets/middle_price.png>
+
+Visualized with <a src=https://github.com/bhftbootcamp/LightweightCharts.jl>LightweightCharts.jl</a>.
+</div>
+
+<br><p>You can smooth the price data by using <a href="https://en.wikipedia.org/wiki/Moving_average">Simple Moving Average</a> function.</p><pre><code class="language-julia hljs">using Dates
+using TimeArrays
+
+julia&gt; prices = ta_price_sample_data()
+7777-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-04-01T00:00:00.661, 0.6501)
+ TimeTick(2024-04-01T00:05:57.481, 0.6505)
+ ⋮
+ TimeTick(2024-04-30T23:42:11.920, 0.4417)
+
+julia&gt; smoothed_prices = ta_sma(prices, Hour(3))
+7777-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-04-01T00:00:00.661, NaN)
+ TimeTick(2024-04-01T00:05:57.481, NaN)
+ ⋮
+ TimeTick(2024-04-30T23:42:11.920, 0.4408)</code></pre><div align=right>
+<img src=assets/smoothed_prices.png>
+
+Visualized with <a src=https://github.com/bhftbootcamp/LightweightCharts.jl>LightweightCharts.jl</a>.
+</div>
+
+<br><p>You can also use custom types with TimeArrays. Below we convert prices into four-hour candlesticks using resampling.</p><pre><code class="language-julia hljs">using Dates
+using TimeArrays
+
+struct OHLC
+    open::Float64
+    high::Float64
+    low::Float64
+    close::Float64
+end
+
+TimeArrays.ta_nan(::Type{OHLC}) = OHLC(NaN, NaN, NaN, NaN)
+
+function ohlc(x::AbstractVector{&lt;:Number})
+    return if isempty(x)
+        ta_nan(OHLC)
+    else
+        OHLC(x[1], maximum(x), minimum(x), x[end])
+    end
+end
+
+julia&gt; prices = ta_price_sample_data()
+7777-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-04-01T00:00:00.661, 0.6501)
+ TimeTick(2024-04-01T00:05:57.481, 0.6505)
+ ⋮
+ TimeTick(2024-04-30T23:42:11.920, 0.4417)
+
+julia&gt; ta_resample(ohlc, prices, Hour(2); closed = CLOSED_RIGHT, label = LABEL_RIGHT)
+360-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-04-01T02:00:00, OHLC(0.6501, 0.6505, 0.6462, 0.6491))
+ TimeTick(2024-04-01T04:00:00, OHLC(0.6478, 0.6480, 0.6443, 0.6452))
+ ⋮
+ TimeTick(2024-05-01T00:00:00, OHLC(0.4396, 0.4436, 0.4396, 0.4417))</code></pre><div align=right>
+<img src=assets/price_to_candles.png>
+
+Visualized with <a src=https://github.com/bhftbootcamp/LightweightCharts.jl>LightweightCharts.jl</a>.
+</div></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="pages/interface/">Types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 12 June 2024 09:25">Wednesday 12 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

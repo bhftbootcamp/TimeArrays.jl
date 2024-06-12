@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Arithmetic · TimeArrays.jl</title><meta name="title" content="Arithmetic · TimeArrays.jl"/><meta property="og:title" content="Arithmetic · TimeArrays.jl"/><meta property="twitter:title" content="Arithmetic · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/arithmetic/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/arithmetic/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/pages/arithmetic/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../interface/">Types</a></li><li class="is-active"><a class="tocitem" href>Arithmetic</a><ul class="internal"><li><a class="tocitem" href="#API"><span>API</span></a></li></ul></li><li><a class="tocitem" href="../array/">Replace &amp; Fill</a></li><li><a class="tocitem" href="../rolling/">Rolling window</a></li><li><a class="tocitem" href="../resample/">Resample</a></li></ul></li><li><span class="tocitem">For Developers</span><ul><li><a class="tocitem" href="../custom_types/">Custom types</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API Reference</a></li><li class="is-active"><a href>Arithmetic</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Arithmetic</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/pages/arithmetic.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Arithmetic"><a class="docs-heading-anchor" href="#Arithmetic">Arithmetic</a><a id="Arithmetic-1"></a><a class="docs-heading-anchor-permalink" href="#Arithmetic" title="Permalink"></a></h1><p>Time series support basic arithmetic operations, allowing you to perform the necessary calculations. However, it is worth noting that such operations are performed in a slightly different way than on ordinary arrays, in which elements identical by index or value are compared. In our implementation, time series values ​​are matched by the last known time value.</p><p>To better understand the idea of ​​time series matching, let&#39;s look at the following simple example of adding two time series:</p><pre><code class="language-julia-repl hljs">julia&gt; t_array1 = TimeArray([
+           TimeTick(1, 2.0),
+           TimeTick(3, 4.0),
+           TimeTick(7, 6.0),
+       ]);
+
+julia&gt; t_array2 = TimeArray([
+           TimeTick(3, 3.0),
+           TimeTick(5, 5.0),
+       ]);</code></pre><p>Visually, these time series can be represented as follows:</p><pre>
+
+ time:   - - - 1 - - - - 2 - - - - 3 - - - - 4 - - - - 5 - - - - 6 - - - - 7 - - - >
+ 
+              2.0                 4.0                                     6.0
+ t_array1:     ● - - - - - - - - - ● - - - - - - - - - - - - - - - - - - - ● - - - > 
+ 
+ t_array2:                         ● - - - - - - - - - ● - - - - - - - - - - - - - >
+                                  3.0                 5.0
+
+</pre><p>Let&#39;s apply the addition operation to them.</p><pre><code class="language-julia-repl hljs">julia&gt; t_array1 + t_array2
+4-element TimeArray{Int64, Float64}:
+ TimeTick(1, NaN)
+ TimeTick(3, 7.0)
+ TimeTick(5, 9.0)
+ TimeTick(7, 11.0)</code></pre><p>The expected behavior will be as follows:</p><ul><li>For the first timestamp <code>1</code> from the <code>t_array1</code> there is no time value from the <code>t_array2</code> one, so the resulting value of this timestamp will be <code>2.0 + NaN = NaN</code>.</li><li>Then for timestamp <code>3</code> in both arrays there are values ​​(<code>4.0</code> and <code>3.0</code>), so as a result of addition we get <code>7.0</code>.</li><li>At timestamp <code>5</code> in the <code>t_array2</code> a new value appears <code>5.0</code> for which in the <code>t_array1</code> the current value will be <code>4.0</code>. As a result we get <code>9.0</code>.</li><li>Finally, at timestamp <code>7</code> happens the opposite of the previous case.</li></ul><pre>
+
+ time:     - - - 1 - - - - 2 - - - - 3 - - - - 4 - - - - 5 - - - - 6 - - - - 7 - - - >
+ 
+                2.0                 4.0﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉﹉⤵                   6.0
+ t_array1:       ● - - - - - - - - - ● - - - - - - - - - - - - - - - - - - - ● - - - >
+                 ┊                   ┊                   ┊                   ┊
+    +       [2.0 + NaN]         [4.0 + 3.0]         [4.0 + 5.0]         [6.0 + 5.0]
+                 ┊                   ┊                   ┊                   ┊
+ t_array2:       X                   ● - - - - - - - - - ● - - - - - - - - - - - - - >
+                NaN                 3.0                 5.0 ﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍﹍⤴
+ 
+ result:         ● - - - - - - - - - ● - - - - - - - - - ● - - - - - - - - - ● - - - > 
+                NaN                 7.0                 9.0                11.0
+
+</pre><p>Supported mathematical operations on time series:</p><ul><li>between two TimeArrays:<ul><li><code>+</code>: addition</li><li><code>-</code>: subtraction</li><li><code>*</code>: multiplication</li><li><code>/</code>: division</li></ul></li><li>between TimeArray and other values<ul><li><code>+</code>: addition</li><li><code>-</code>: subtraction</li><li><code>*</code>: multiplication</li><li><code>/</code>: division</li><li><code>^</code>: exponentiation</li></ul></li></ul><p>For more flexible arithmetic work on TimeArrays, you can use functions <a href="#TimeArrays.ta_mergewith"><code>ta_mergewith</code></a> and <a href="#TimeArrays.ta_merge"><code>ta_merge</code></a>.</p><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_mergewith" href="#TimeArrays.ta_mergewith"><code>TimeArrays.ta_mergewith</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_mergewith(f, l_array::TimeArray, r_array::TimeArray; kw...) -&gt; TimeArray</code></pre><p>Creates a new TimeArray object by applying a binary function <code>f</code> on elements of <code>left</code> and <code>right</code> TimeArrays. TimeArrays uses the following rules to establish corresponding elements:</p><ul><li>An element of the first array is matched to the nearest smaller or equal element of the second array.</li><li>If there is no such element in the second array, then the resulting element will be <code>NaN</code>.</li></ul><p><strong>Keyword arguments</strong></p><ul><li><code>l_merge::Bool = true</code>: Use <code>left</code> timestamps in resulting TimeArray.</li><li><code>r_merge::Bool = true</code>: Use <code>right</code> timestamps in resulting TimeArray.</li><li><code>padding::Bool = true</code>: Preserve first timestamps with <code>NaN</code> values.</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_left = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 0.2),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 0.5),
+       ]);
+
+julia&gt; t_right = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 5.0),
+           TimeTick(DateTime(&quot;2024-01-07&quot;), 7.0),
+       ]);
+
+julia&gt; ta_mergewith(+, t_left, t_right)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-02T00:00:00, 1.2)
+ TimeTick(2024-01-05T00:00:00, 5.5)
+ TimeTick(2024-01-07T00:00:00, 7.5)
+
+julia&gt; ta_mergewith(-, t_left, t_right; l_merge = false)
+3-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-05T00:00:00, -4.5)
+ TimeTick(2024-01-07T00:00:00, -6.5)
+
+julia&gt; ta_mergewith(*, t_left, t_right, r_merge = false, padding = false)
+2-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 0.2)
+ TimeTick(2024-01-05T00:00:00, 2.5)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/1d1829225f3fb08983235a10ae1c52c3bce730dc/src/arithmetic.jl#L3-L50">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_merge" href="#TimeArrays.ta_merge"><code>TimeArrays.ta_merge</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_merge(f::Function, t_array::TimeArray, value) -&gt; TimeArray
+ta_merge(f::Function, value, t_array::TimeArray) -&gt; TimeArray</code></pre><p>Creates a new TimeArray by applying a binary function <code>f</code> with <code>value</code> on elements of <code>t_array</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-08&quot;), 6.0),
+       ]);
+
+julia&gt; ta_merge(+, t_array, 2.0)
+3-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-03T00:00:00, 4.0)
+ TimeTick(2024-01-04T00:00:00, 5.0)
+ TimeTick(2024-01-08T00:00:00, 8.0)
+
+julia&gt; ta_merge(/, 18.0, t_array)
+3-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-03T00:00:00, 9.0)
+ TimeTick(2024-01-04T00:00:00, 6.0)
+ TimeTick(2024-01-08T00:00:00, 3.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/1d1829225f3fb08983235a10ae1c52c3bce730dc/src/arithmetic.jl#L145-L173">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../interface/">« Types</a><a class="docs-footer-nextpage" href="../array/">Replace &amp; Fill »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Wednesday 12 June 2024 09:25">Wednesday 12 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
