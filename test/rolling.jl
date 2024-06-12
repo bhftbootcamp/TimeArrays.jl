@@ -311,44 +311,44 @@
 
     @testset "Case №5: WMA" begin
         ta = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), 10),
-            (DateTime(2024, 1, 2), 11),
-            (DateTime(2024, 1, 3), 12),
-            (DateTime(2024, 1, 4), 13),
-            (DateTime(2024, 1, 5), 14),
-            (DateTime(2024, 1, 6), 15),
-            (DateTime(2024, 1, 7), 16),
-            (DateTime(2024, 1, 8), 17),
-            (DateTime(2024, 1, 9), 18),
-            (DateTime(2024, 1, 10), 19),
+            TimeTick(DateTime(2024, 1, 1), 10),
+            TimeTick(DateTime(2024, 1, 2), 11),
+            TimeTick(DateTime(2024, 1, 3), 12),
+            TimeTick(DateTime(2024, 1, 4), 13),
+            TimeTick(DateTime(2024, 1, 5), 14),
+            TimeTick(DateTime(2024, 1, 6), 15),
+            TimeTick(DateTime(2024, 1, 7), 16),
+            TimeTick(DateTime(2024, 1, 8), 17),
+            TimeTick(DateTime(2024, 1, 9), 18),
+            TimeTick(DateTime(2024, 1, 10), 19),
         ])
 
         ta_after_wma_3 = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), NaN),
-            (DateTime(2024, 1, 2), NaN),
-            (DateTime(2024, 1, 3), 11.333333333333332),
-            (DateTime(2024, 1, 4), 12.333333333333332),
-            (DateTime(2024, 1, 5), 13.333333333333332),
-            (DateTime(2024, 1, 6), 14.333333333333332),
-            (DateTime(2024, 1, 7), 15.333333333333332),
-            (DateTime(2024, 1, 8), 16.333333333333332),
-            (DateTime(2024, 1, 9), 17.333333333333332),
-            (DateTime(2024, 1, 10), 18.333333333333332),
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 3), 11.333333333333332),
+            TimeTick(DateTime(2024, 1, 4), 12.333333333333332),
+            TimeTick(DateTime(2024, 1, 5), 13.333333333333332),
+            TimeTick(DateTime(2024, 1, 6), 14.333333333333332),
+            TimeTick(DateTime(2024, 1, 7), 15.333333333333332),
+            TimeTick(DateTime(2024, 1, 8), 16.333333333333332),
+            TimeTick(DateTime(2024, 1, 9), 17.333333333333332),
+            TimeTick(DateTime(2024, 1, 10), 18.333333333333332),
         ])
 
         @test isequal(ta_wma(ta, 3), ta_after_wma_3)
 
         ta_after_wma_7 = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), NaN),
-            (DateTime(2024, 1, 2), NaN),
-            (DateTime(2024, 1, 3), NaN),
-            (DateTime(2024, 1, 4), NaN),
-            (DateTime(2024, 1, 5), NaN),
-            (DateTime(2024, 1, 6), NaN),
-            (DateTime(2024, 1, 7), 13.999999999999998),
-            (DateTime(2024, 1, 8), 15.0),
-            (DateTime(2024, 1, 9), 16.0),
-            (DateTime(2024, 1, 10), 17.0),
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 3), NaN),
+            TimeTick(DateTime(2024, 1, 4), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), NaN),
+            TimeTick(DateTime(2024, 1, 7), 14.0),
+            TimeTick(DateTime(2024, 1, 8), 15.0),
+            TimeTick(DateTime(2024, 1, 9), 16.0),
+            TimeTick(DateTime(2024, 1, 10), 17.0),
         ])
 
         @test isequal(ta_wma(ta, 7), ta_after_wma_7)
@@ -356,44 +356,44 @@
 
     @testset "Case №5: EMA" begin
         ta = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), 10),
-            (DateTime(2024, 1, 2), 11),
-            (DateTime(2024, 1, 3), 12),
-            (DateTime(2024, 1, 4), 13),
-            (DateTime(2024, 1, 5), 14),
-            (DateTime(2024, 1, 6), 15),
-            (DateTime(2024, 1, 7), 16),
-            (DateTime(2024, 1, 8), 17),
-            (DateTime(2024, 1, 9), 18),
-            (DateTime(2024, 1, 10), 19),
+            TimeTick(DateTime(2024, 1, 1), 10),
+            TimeTick(DateTime(2024, 1, 2), 11),
+            TimeTick(DateTime(2024, 1, 3), 12),
+            TimeTick(DateTime(2024, 1, 4), 13),
+            TimeTick(DateTime(2024, 1, 5), 14),
+            TimeTick(DateTime(2024, 1, 6), 15),
+            TimeTick(DateTime(2024, 1, 7), 16),
+            TimeTick(DateTime(2024, 1, 8), 17),
+            TimeTick(DateTime(2024, 1, 9), 18),
+            TimeTick(DateTime(2024, 1, 10), 19),
         ])
 
         ta_after_ema_3 = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), 10.0),
-            (DateTime(2024, 1, 2), 10.5),
-            (DateTime(2024, 1, 3), 11.25),
-            (DateTime(2024, 1, 4), 12.125),
-            (DateTime(2024, 1, 5), 13.0625),
-            (DateTime(2024, 1, 6), 14.03125),
-            (DateTime(2024, 1, 7), 15.015625),
-            (DateTime(2024, 1, 8), 16.0078125),
-            (DateTime(2024, 1, 9), 17.00390625),
-            (DateTime(2024, 1, 10), 18.001953125),
+            TimeTick(DateTime(2024, 1, 1), 10.0),
+            TimeTick(DateTime(2024, 1, 2), 10.5),
+            TimeTick(DateTime(2024, 1, 3), 11.25),
+            TimeTick(DateTime(2024, 1, 4), 12.125),
+            TimeTick(DateTime(2024, 1, 5), 13.0625),
+            TimeTick(DateTime(2024, 1, 6), 14.03125),
+            TimeTick(DateTime(2024, 1, 7), 15.015625),
+            TimeTick(DateTime(2024, 1, 8), 16.0078125),
+            TimeTick(DateTime(2024, 1, 9), 17.00390625),
+            TimeTick(DateTime(2024, 1, 10), 18.001953125),
         ])
         
         @test isequal(ta_ema(ta, 3), ta_after_ema_3)
 
         ta_after_ema_7 = TimeArray{DateTime,Float64}([
-            (DateTime(2024, 1, 1), 10.0),
-            (DateTime(2024, 1, 2), 10.5),
-            (DateTime(2024, 1, 3), 11.0),
-            (DateTime(2024, 1, 4), 11.5),
-            (DateTime(2024, 1, 5), 12.0),
-            (DateTime(2024, 1, 6), 12.5),
-            (DateTime(2024, 1, 7), 13.375),
-            (DateTime(2024, 1, 8), 14.28125),
-            (DateTime(2024, 1, 9), 15.2109375),
-            (DateTime(2024, 1, 10), 16.158203125),
+            TimeTick(DateTime(2024, 1, 1), 10.0)
+            TimeTick(DateTime(2024, 1, 2), 10.25)
+            TimeTick(DateTime(2024, 1, 3), 10.6875)
+            TimeTick(DateTime(2024, 1, 4), 11.265625)
+            TimeTick(DateTime(2024, 1, 5), 11.94921875)
+            TimeTick(DateTime(2024, 1, 6), 12.7119140625)
+            TimeTick(DateTime(2024, 1, 7), 13.533935546875)
+            TimeTick(DateTime(2024, 1, 8), 14.40045166015625)
+            TimeTick(DateTime(2024, 1, 9), 15.300338745117188)
+            TimeTick(DateTime(2024, 1, 10),16.22525405883789)
         ])
         
         @test isequal(ta_ema(ta, 7), ta_after_ema_7)
