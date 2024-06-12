@@ -192,8 +192,8 @@ function ta_ema(t_array::TimeArray{T,V}, window::Integer) where {T,V}
     new_ticks = Vector{TimeTick{T,V2}}(undef, len)
 
     alpha = 2.0 / (window + 1)
-    for i in 2:len
-        values[i] = mean(view(values, 1:i))
+    @views for i in 2:len
+        values[i] = mean(values[max(i - window + 1, 1):i])
     end
 
     new_ticks[1] = t_array[1]
@@ -237,7 +237,11 @@ function ta_wma(t_array::TimeArray{T,V}, window::Integer) where {T,V}
     coef = 1.0 / sum(1:window)
     return ta_rolling(t_array, window) do slice
         length(slice) != window && return ta_nan(V)
-        return sum([i * coef * slice[i] for i in 1:window])
+        _sum = 0
+        for i in 1:window
+            _sum += i * slice[i]
+        end
+        return coef * _sum
     end
 end
 
