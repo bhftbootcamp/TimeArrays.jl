@@ -45,7 +45,7 @@ julia> t_array = TimeArray([
 
 julia> ta_rolling(sum, t_array, Day(3))
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-01T00:00:00, NaN)
  TimeTick(2024-01-03T00:00:00, 3.0)
  TimeTick(2024-01-04T00:00:00, 5.0)
  TimeTick(2024-01-07T00:00:00, 4.0)
@@ -92,9 +92,11 @@ function ta_rolling(f::Function, t_array::TimeArray{T,V}, window::Period) where 
 
         value = if l_index > 0
             f(view(values, l_index+1:r_index))
-        else
+        elseif l_index == 0
             l_index = -1
             f(view(values, 1:r_index))
+        else
+            ta_nan(V2)
         end
 
         new_ticks[r_index] =TimeTick{T,V2}(r_timestamp, value)
@@ -140,7 +142,7 @@ julia> t_array = TimeArray([
 
 julia> ta_sma(t_array, Day(3))
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-02T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, NaN)
  TimeTick(2024-01-03T00:00:00, 1.5)
  TimeTick(2024-01-05T00:00:00, 2.5)
  TimeTick(2024-01-06T00:00:00, 3.5)
@@ -227,7 +229,7 @@ julia> ta_wma(t_array, 3)
 
 julia> ta_wma(t_array, Day(3))
 5-element TimeArray{DateTime, Float64}:
- TimeTick(2024-01-02T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, NaN)
  TimeTick(2024-01-03T00:00:00, 1.6666666666666665)
  TimeTick(2024-01-05T00:00:00, 2.6666666666666665)
  TimeTick(2024-01-06T00:00:00, 3.6666666666666665)
