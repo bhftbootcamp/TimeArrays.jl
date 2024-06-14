@@ -5,7 +5,7 @@
 """
     AbstractTick{T,V}
 
-Supertype for `TimeTick{T,V}` with timestmap of type `T` and value of type `V`.
+Supertype for `TimeTick{T,V}` with timestamp of type `T` and value of type `V`.
 """
 abstract type AbstractTick{T,V} end
 
@@ -99,10 +99,10 @@ Constructs a [`TimeTick`](@ref) object from named tuple `x` which contains the t
 ```jldoctest
 julia> using Dates
 
-julia> TimeTick{Date,Float64}((timestmap = DateTime("2024-01-01T00:00:00"), value = 100))
+julia> TimeTick{Date,Float64}((timestamp = DateTime("2024-01-01T00:00:00"), value = 100))
 TimeTick(2024-01-01, 100.0)
 
-julia> TimeTick((timestmap = DateTime("2024-01-01T00:00:00"), value = 100))
+julia> TimeTick((timestamp = DateTime("2024-01-01T00:00:00"), value = 100))
 TimeTick(2024-01-01T00:00:00, 100)
 ```
 """
@@ -201,14 +201,14 @@ end
 """
     AbstractTimeArray{T,V} <: AbstractVector{TimeTick{T,V}}
 
-Supertype for `TimeArray{T,V}` with timestmaps of type `T` and values of type `V`.
+Supertype for `TimeArray{T,V}` with timestamps of type `T` and values of type `V`.
 """
 abstract type AbstractTimeArray{T,V} <: AbstractVector{TimeTick{T,V}} end
 
 """
     TimeArray{T,V} <: AbstractTimeArray{T,V}
 
-Type describing a time series with timestmaps of type `T` and values of type `V`.
+Type describing a time series with timestamps of type `T` and values of type `V`.
 
 ## Fields
 - `values::Vector{TimeTick{T,V}}`: Elements of a time series.
