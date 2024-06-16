@@ -168,6 +168,22 @@ function Base.convert(::Type{TimeTick{T,V}}, value::Pair{TimeLike,Any}) where {T
     return TimeTick{T,V}(value)
 end
 
+function Base.convert(::Type{Tuple}, timetick::TimeTick)
+    return Tuple(timetick)
+end
+
+function Base.convert(::Type{Tuple{T,V}}, timetick::TimeTick) where {T<:TimeLike,V}
+    return Tuple{T,V}(timetick)
+end
+
+function Base.convert(::Type{Pair}, timetick::TimeTick)
+    return Pair(timetick...)
+end
+
+function Base.convert(::Type{Pair{T,V}}, timetick::TimeTick) where {T<:TimeLike,V}
+    return Pair{T,V}(timetick...)
+end
+
 function Base.getindex(t::TimeTick, i::Integer)
     i == 1 && return ta_timestamp(t)
     i == 2 && return ta_value(t)
@@ -203,7 +219,7 @@ end
 
 Supertype for `TimeArray{T,V}` with timestamps of type `T` and values of type `V`.
 """
-abstract type AbstractTimeArray{T,V} <: AbstractVector{TimeTick{T,V}} end
+abstract type AbstractTimeArray{T,V} <: AbstractVector{Tuple{T,V}} end
 
 """
     TimeArray{T,V} <: AbstractTimeArray{T,V}
