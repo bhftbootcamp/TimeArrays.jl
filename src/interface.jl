@@ -219,7 +219,7 @@ end
 
 Supertype for `TimeArray{T,V}` with timestamps of type `T` and values of type `V`.
 """
-abstract type AbstractTimeArray{T,V} <: AbstractVector{Tuple{T,V}} end
+abstract type AbstractTimeArray{T,V} <: AbstractVector{AbstractTick{T,V}} end
 
 """
     TimeArray{T,V} <: AbstractTimeArray{T,V}
