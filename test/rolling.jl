@@ -14,6 +14,18 @@
         @test isequal(
             ta_rolling(sum, ta_for_window, 4),
             TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 10.0),
+            TimeTick(DateTime(2024, 1, 7), 14.0),
+            TimeTick(DateTime(2024, 1, 15), 18.0),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(sum, ta_for_window, 4; observations = 1),
+            TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 3.0),
             TimeTick(DateTime(2024, 1, 5), 6.0),
@@ -25,6 +37,18 @@
 
         @test isequal(
             ta_rolling(mean, ta_for_window, 4),
+            TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 2.5),
+            TimeTick(DateTime(2024, 1, 7), 3.5),
+            TimeTick(DateTime(2024, 1, 15), 4.5),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(mean, ta_for_window, 4; observations = 1),
             TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 1.5),
@@ -38,6 +62,18 @@
         @test isequal(
             ta_rolling(maximum, ta_for_window, 4),
             TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 4.0),
+            TimeTick(DateTime(2024, 1, 7), 5.0),
+            TimeTick(DateTime(2024, 1, 15), 6.0),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(maximum, ta_for_window, 4; observations = 1),
+            TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 2.0),
             TimeTick(DateTime(2024, 1, 5), 3.0),
@@ -49,6 +85,18 @@
 
         @test isequal(
             ta_rolling(minimum, ta_for_window, 4),
+            TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 1.0),
+            TimeTick(DateTime(2024, 1, 7), 2.0),
+            TimeTick(DateTime(2024, 1, 15), 3.0),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(minimum, ta_for_window, 4; observations = 1),
             TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 1.0),
@@ -62,6 +110,18 @@
         @test isequal(
             ta_rolling(first, ta_for_window, 4),
             TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 1.0),
+            TimeTick(DateTime(2024, 1, 7), 2.0),
+            TimeTick(DateTime(2024, 1, 15), 3.0),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(first, ta_for_window, 4; observations = 1),
+            TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 1.0),
             TimeTick(DateTime(2024, 1, 5), 1.0),
@@ -73,6 +133,18 @@
 
         @test isequal(
             ta_rolling(last, ta_for_window, 4),
+            TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 4.0),
+            TimeTick(DateTime(2024, 1, 7), 5.0),
+            TimeTick(DateTime(2024, 1, 15), 6.0),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(last, ta_for_window, 4; observations = 1),
             TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 2.0),
@@ -86,6 +158,18 @@
         @test isequal(
             ta_rolling(median, ta_for_window, 4),
             TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 2.5),
+            TimeTick(DateTime(2024, 1, 7), 3.5),
+            TimeTick(DateTime(2024, 1, 15), 4.5),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(median, ta_for_window, 4; observations = 1),
+            TimeArray([
             TimeTick(DateTime(2024, 1, 1), 1.0),
             TimeTick(DateTime(2024, 1, 2), 1.5),
             TimeTick(DateTime(2024, 1, 5), 2.0),
@@ -97,6 +181,18 @@
 
         @test isequal(
             ta_rolling(std, ta_for_window, 4),
+            TimeArray([
+            TimeTick(DateTime(2024, 1, 1), NaN),
+            TimeTick(DateTime(2024, 1, 2), NaN),
+            TimeTick(DateTime(2024, 1, 5), NaN),
+            TimeTick(DateTime(2024, 1, 6), 1.2909944487358056),
+            TimeTick(DateTime(2024, 1, 7), 1.2909944487358056),
+            TimeTick(DateTime(2024, 1, 15), 1.2909944487358056),
+        ]),
+        )
+
+        @test isequal(
+            ta_rolling(std, ta_for_window, 4; observations = 1),
             TimeArray([
             TimeTick(DateTime(2024, 1, 1), NaN),
             TimeTick(DateTime(2024, 1, 2), 0.7071067811865476),
@@ -131,6 +227,18 @@
         )
 
         @test isequal(
+            ta_rolling(sum, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 3.0),
+                TimeTick(DateTime(2024, 1, 5), 5.0),
+                TimeTick(DateTime(2024, 1, 6), 7.0),
+                TimeTick(DateTime(2024, 1, 7), 12.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
+            ]),
+        )
+
+        @test isequal(
             ta_rolling(mean, ta_for_window, Day(4)),
             TimeArray([
                 TimeTick(DateTime(2024, 1, 1), NaN),
@@ -139,6 +247,18 @@
                 TimeTick(DateTime(2024, 1, 6), 3.5),
                 TimeTick(DateTime(2024, 1, 7), 4.0),
                 TimeTick(DateTime(2024, 1, 15), 6.0),
+            ]),
+        )
+
+        @test isequal(
+            ta_rolling(mean, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 1.5),
+                TimeTick(DateTime(2024, 1, 5), 2.5),
+                TimeTick(DateTime(2024, 1, 6), 3.5),
+                TimeTick(DateTime(2024, 1, 7), 4.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
             ]),
         )
 
@@ -155,6 +275,18 @@
         )
 
         @test isequal(
+            ta_rolling(maximum, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 2.0),
+                TimeTick(DateTime(2024, 1, 5), 3.0),
+                TimeTick(DateTime(2024, 1, 6), 4.0),
+                TimeTick(DateTime(2024, 1, 7), 5.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
+            ]),
+        )
+
+        @test isequal(
             ta_rolling(minimum, ta_for_window, Day(4)),
             TimeArray([
                 TimeTick(DateTime(2024, 1, 1), NaN),
@@ -163,6 +295,18 @@
                 TimeTick(DateTime(2024, 1, 6), 3.0),
                 TimeTick(DateTime(2024, 1, 7), 3.0),
                 TimeTick(DateTime(2024, 1, 15), 6.0),
+            ]),
+        )
+
+        @test isequal(
+            ta_rolling(minimum, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 1.0),
+                TimeTick(DateTime(2024, 1, 5), 2.0),
+                TimeTick(DateTime(2024, 1, 6), 3.0),
+                TimeTick(DateTime(2024, 1, 7), 3.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
             ]),
         )
 
@@ -179,6 +323,18 @@
         )
 
         @test isequal(
+            ta_rolling(first, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 1.0),
+                TimeTick(DateTime(2024, 1, 5), 2.0),
+                TimeTick(DateTime(2024, 1, 6), 3.0),
+                TimeTick(DateTime(2024, 1, 7), 3.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
+            ]),
+        )
+
+        @test isequal(
             ta_rolling(last, ta_for_window, Day(4)),
             TimeArray([
                 TimeTick(DateTime(2024, 1, 1), NaN),
@@ -187,6 +343,18 @@
                 TimeTick(DateTime(2024, 1, 6), 4.0),
                 TimeTick(DateTime(2024, 1, 7), 5.0),
                 TimeTick(DateTime(2024, 1, 15), 6.0),
+            ]),
+        )
+
+        @test isequal(
+            ta_rolling(last, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 2.0),
+                TimeTick(DateTime(2024, 1, 5), 3.0),
+                TimeTick(DateTime(2024, 1, 6), 4.0),
+                TimeTick(DateTime(2024, 1, 7), 5.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
             ]),
         )
 
@@ -203,7 +371,31 @@
         )
 
         @test isequal(
+            ta_rolling(median, ta_for_window, Day(4); observations = 2),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 1.5),
+                TimeTick(DateTime(2024, 1, 5), 2.5),
+                TimeTick(DateTime(2024, 1, 6), 3.5),
+                TimeTick(DateTime(2024, 1, 7), 4.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
+            ]),
+        )
+
+        @test isequal(
             ta_rolling(std, ta_for_window, Day(4)),
+            TimeArray([
+                TimeTick(DateTime(2024, 1, 1), NaN),
+                TimeTick(DateTime(2024, 1, 2), 0.7071067811865476),
+                TimeTick(DateTime(2024, 1, 5), 0.7071067811865476),
+                TimeTick(DateTime(2024, 1, 6), 0.7071067811865476),
+                TimeTick(DateTime(2024, 1, 7), 1.0),
+                TimeTick(DateTime(2024, 1, 15), NaN),
+            ]),
+        )
+
+        @test isequal(
+            ta_rolling(std, ta_for_window, Day(4); observations = 2),
             TimeArray([
                 TimeTick(DateTime(2024, 1, 1), NaN),
                 TimeTick(DateTime(2024, 1, 2), 0.7071067811865476),

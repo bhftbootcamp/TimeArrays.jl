@@ -128,6 +128,18 @@
         @test isequal(
             ta_rolling(sum, ta_ohlc, 3),
             TimeArray([
+                TimeTick(DateTime(2024, 1, 1, 1), OHLC(NaN, NaN, NaN, NaN)),
+                TimeTick(DateTime(2024, 1, 1, 2), OHLC(NaN, NaN, NaN, NaN)),
+                TimeTick(DateTime(2024, 1, 1, 3), OHLC(3.0, 6.0, 9.0, 12.0)),
+                TimeTick(DateTime(2024, 1, 1, 4), OHLC(3.0, 6.0, 9.0, 12.0)),
+                TimeTick(DateTime(2024, 1, 1, 5), OHLC(3.0, 6.0, 9.0, 12.0)),
+                TimeTick(DateTime(2024, 1, 1, 6), OHLC(3.0, 6.0, 9.0, 12.0)),
+            ]),
+        )
+
+        @test isequal(
+            ta_rolling(sum, ta_ohlc, 3; observations = 1),
+            TimeArray([
                 TimeTick(DateTime(2024, 1, 1, 1), OHLC(1.0, 2.0, 3.0, 4.0)),
                 TimeTick(DateTime(2024, 1, 1, 2), OHLC(2.0, 4.0, 6.0, 8.0)),
                 TimeTick(DateTime(2024, 1, 1, 3), OHLC(3.0, 6.0, 9.0, 12.0)),
