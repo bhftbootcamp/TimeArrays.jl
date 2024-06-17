@@ -138,10 +138,9 @@ Visualized with [LightweightCharts.jl](https://github.com/bhftbootcamp/Lightweig
 
 <br>
 
-You can smooth the price data by using [Simple Moving Average](https://en.wikipedia.org/wiki/Moving_average) function.
+You can smooth the price data by using different [Moving Average](https://en.wikipedia.org/wiki/Moving_average) algorithms.
 
 ```julia
-using Dates
 using TimeArrays
 
 julia> prices = ta_price_sample_data()
@@ -151,12 +150,26 @@ julia> prices = ta_price_sample_data()
  ⋮
  TimeTick(2024-04-30T23:42:11.920, 0.4417)
 
-julia> smoothed_prices = ta_sma(prices, Hour(3))
+julia> sma_prices = ta_sma(prices, 20)
 7777-element TimeArray{DateTime, Float64}:
  TimeTick(2024-04-01T00:00:00.661, NaN)
  TimeTick(2024-04-01T00:05:57.481, NaN)
  ⋮
- TimeTick(2024-04-30T23:42:11.920, 0.4408)
+ TimeTick(2024-04-30T23:42:11.920, 0.4403)
+
+julia> wma_prices = ta_wma(prices, 20)
+7777-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-04-01T00:00:00.661, NaN)
+ TimeTick(2024-04-01T00:05:57.481, NaN)
+ ⋮
+ TimeTick(2024-04-30T23:42:11.920, 0.4409)
+
+julia> ema_prices = ta_ema(prices, 20)
+7777-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-04-01T00:00:00.661, 0.6501)
+ TimeTick(2024-04-01T00:05:57.481, 0.6501)
+ ⋮
+ TimeTick(2024-04-30T23:42:11.920, 0.4399)
 ```
 
 <div align=right>

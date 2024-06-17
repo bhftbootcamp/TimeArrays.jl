@@ -56,10 +56,10 @@ Then, relative to the selected origin, a grid with a step of the specified `peri
 
 <pre>
 
- preiod = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
+ period = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
               0           2           4           6           8           10
 
- preiod = 3:  | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - - - -
+ period = 3:  | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - - - -
               0                 3                 6                 9
               ^
               |
@@ -69,10 +69,10 @@ Then, relative to the selected origin, a grid with a step of the specified `peri
 
 <pre>
 
- preiod = 2:  - - - | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - 
+ period = 2:  - - - | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - 
                     1           3           5           7           9           
 
- preiod = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
+ period = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
                     1                 4                 7                 10
                     ^
                     |
@@ -82,10 +82,10 @@ Then, relative to the selected origin, a grid with a step of the specified `peri
 
 <pre>
 
- preiod = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
+ period = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
               0           2           4           6           8           10
 
- preiod = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
+ period = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
                     1                 4                 7                 10
                                                                           ^
                                                                           |
