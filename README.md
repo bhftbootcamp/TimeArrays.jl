@@ -141,7 +141,6 @@ Visualized with [LightweightCharts.jl](https://github.com/bhftbootcamp/Lightweig
 You can smooth the price data by using different [Moving Average](https://en.wikipedia.org/wiki/Moving_average) algorithms.
 
 ```julia
-using Dates
 using TimeArrays
 
 julia> prices = ta_price_sample_data()
