@@ -31,11 +31,11 @@ struct TimeTick{T<:TimeLike,V<:Any} <: AbstractTick{T,V}
     end
 
     function TimeTick{T,V}(x::Tuple{TimeLike,Any}) where {T<:TimeLike,V}
-        return new{T,V}(x...)
+        return new{T,V}(x[1], x[2])
     end
 
     function TimeTick{T,V}(x::NamedTuple{names,<:Tuple{TimeLike,Any}} where {names}) where {T<:TimeLike,V}
-        return new{T,V}(x...)
+        return new{T,V}(x[1], x[2])
     end
 
     function TimeTick{T,V}(x::Pair{<:TimeLike,<:Any}) where {T<:TimeLike,V}
@@ -86,7 +86,7 @@ TimeTick(2024-01-01T00:00:00, 100)
 ```
 """
 function TimeTick(x::Tuple{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(x...)
+    return TimeTick{T,V}(x[1], x[2])
 end
 
 """
@@ -107,7 +107,7 @@ TimeTick(2024-01-01T00:00:00, 100)
 ```
 """
 function TimeTick(x::NamedTuple{names,Tuple{T,V}}) where {names,T<:TimeLike,V}
-    return TimeTick{T,V}(x...)
+    return TimeTick{T,V}(x[1], x[2])
 end
 
 """
@@ -177,11 +177,11 @@ function Base.convert(::Type{Tuple{T,V}}, timetick::TimeTick) where {T<:TimeLike
 end
 
 function Base.convert(::Type{Pair}, timetick::TimeTick)
-    return Pair(timetick...)
+    return Pair(x.first, x.second)
 end
 
 function Base.convert(::Type{Pair{T,V}}, timetick::TimeTick) where {T<:TimeLike,V}
-    return Pair{T,V}(timetick...)
+    return Pair{T,V}(x.first, x.second)
 end
 
 function Base.getindex(t::TimeTick, i::Integer)
