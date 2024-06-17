@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Custom types · TimeArrays.jl</title><meta name="title" content="Custom types · TimeArrays.jl"/><meta property="og:title" content="Custom types · TimeArrays.jl"/><meta property="twitter:title" content="Custom types · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/custom_types/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/custom_types/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/pages/custom_types/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../interface/">Types</a></li><li><a class="tocitem" href="../arithmetic/">Arithmetic</a></li><li><a class="tocitem" href="../array/">Replace &amp; Fill</a></li><li><a class="tocitem" href="../rolling/">Rolling window</a></li><li><a class="tocitem" href="../resample/">Resample</a></li></ul></li><li><span class="tocitem">For Developers</span><ul><li class="is-active"><a class="tocitem" href>Custom types</a><ul class="internal"><li><a class="tocitem" href="#Required-metods"><span>Required metods</span></a></li><li><a class="tocitem" href="#Optional-methods"><span>Optional methods</span></a></li><li><a class="tocitem" href="#Example"><span>Example</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">For Developers</a></li><li class="is-active"><a href>Custom types</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Custom types</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/pages/custom_types.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Custom-types"><a class="docs-heading-anchor" href="#Custom-types">Custom types</a><a id="Custom-types-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-types" title="Permalink"></a></h1><p>Not only Numbers, but also custom types can be used as time series values. However, it is worth noting that for the full correct use of custom types as <code>TimeArrays</code> values, it is necessary to define some methods, which will be listed below.</p><h2 id="Required-metods"><a class="docs-heading-anchor" href="#Required-metods">Required metods</a><a id="Required-metods-1"></a><a class="docs-heading-anchor-permalink" href="#Required-metods" title="Permalink"></a></h2><p>To work with the main functions of the package, you need to define the following methods:</p><table><tr><th style="text-align: left">Required methods</th><th style="text-align: left">Description</th></tr><tr><td style="text-align: left"><code>Base.zero(::Type{T})</code></td><td style="text-align: left">Returns an object of a custom type <code>T</code> that is treated as a zero value.</td></tr><tr><td style="text-align: left"><code>Base.isnan(::Type{T})</code></td><td style="text-align: left">Checks whether an object of type <code>T</code> is considered <code>NaN</code></td></tr><tr><td style="text-align: left"><code>TimeArray.ta_nan(::Type{T})</code></td><td style="text-align: left">Returns an object of a custom type <code>T</code> that is treated as a <code>NaN</code> value.</td></tr></table><h2 id="Optional-methods"><a class="docs-heading-anchor" href="#Optional-methods">Optional methods</a><a id="Optional-methods-1"></a><a class="docs-heading-anchor-permalink" href="#Optional-methods" title="Permalink"></a></h2><p>The following methods are useful to define for a custom type:</p><table><tr><th style="text-align: left">Optional methods</th><th style="text-align: left">Description</th></tr><tr><td style="text-align: left"><code>Base.isless(x::T, y::T)</code></td><td style="text-align: left">See <a href="https://docs.julialang.org/en/v1/base/base/#Base.isless"><code>isless</code></a>.</td></tr><tr><td style="text-align: left"><code>Base.isequal(x::T, y::T)</code></td><td style="text-align: left">See <a href="https://docs.julialang.org/en/v1/base/base/#Base.isequal"><code>isequal</code></a>.</td></tr><tr><td style="text-align: left"><code>Base.:(==)(x::T, y::T)</code></td><td style="text-align: left">See <a href="https://docs.julialang.org/en/v1/base/math/#Base.:=="><code>==</code></a>.</td></tr><tr><td style="text-align: left"><code>Base.:(+)(x::T, y::T)</code></td><td style="text-align: left">Addition between custom types.</td></tr><tr><td style="text-align: left"><code>Base.:(-)(x::T, y::T)</code></td><td style="text-align: left">Subtraction between custom types.</td></tr><tr><td style="text-align: left"><code>Base.:(*)(x::T, y::T)</code></td><td style="text-align: left">Multiplication between custom types.</td></tr><tr><td style="text-align: left"><code>Base.:(/)(x::T, y::T)</code></td><td style="text-align: left">Division between custom types.</td></tr></table><h2 id="Example"><a class="docs-heading-anchor" href="#Example">Example</a><a id="Example-1"></a><a class="docs-heading-anchor-permalink" href="#Example" title="Permalink"></a></h2><p>Let&#39;s look at the necessary method overloads for our custom type that describes a candle:</p><pre><code class="language-julia hljs">struct OHLC
+    o::Float64
+    h::Float64
+    l::Float64
+    c::Float64
+end</code></pre><p>Next we will define the necessary methods:</p><pre><code class="language-julia hljs">Base.zero(::Type{OHLC}) = OHLC(0.0, 0.0, 0.0, 0.0)
+Base.isnan(x::OHLC) = isnan(x.o) &amp;&amp; isnan(x.h) &amp;&amp; isnan(x.l) &amp;&amp; isnan(x.c)
+TimeArrays.ta_nan(::Type{OHLC}) = OHLC(NaN, NaN, NaN, NaN)
+
+Base.isless(x::OHLC, y::OHLC) = isless(x.h, y.h)
+
+function Base.isequal(x::OHLC, y::OHLC)
+    return all([
+        isequal(x.o, y.o),
+        isequal(x.h, y.h),
+        isequal(x.l, y.l),
+        isequal(x.c, y.c),
+    ])
+end
+
+function Base.:(==)(x::OHLC, y::OHLC)
+    return all([
+        x.o == y.o,
+        x.h == y.h,
+        x.l == y.l,
+        x.c == y.c,
+    ])
+end
+
+Base.:+(left::OHLC, right::OHLC) = OHLC(left.o + right.o, left.h + right.h, left.l + right.l, left.c + right.c)
+Base.:-(left::OHLC, right::OHLC) = OHLC(left.o - right.o, left.h - right.h, left.l - right.l, left.c - right.c)
+Base.:*(left::OHLC, right::OHLC) = OHLC(left.o * right.o, left.h * right.h, left.l * right.l, left.c * right.c)
+Base.:*(left::Number, right::OHLC) = OHLC(left * right.o, left * right.h, left * right.l, left * right.c)
+Base.:*(left::OHLC, right::Number) = right * left
+Base.:/(left::Number, right::OHLC) = OHLC(left / right.o, left / right.h, left / right.l, left / right.c)
+Base.:/(left::OHLC, right::Number) = OHLC(left.o / right, left.h / right, left.l / right, left.c / right)</code></pre><p>Now we can use <code>OHLC</code> as the time series value and use all the available functions:</p><pre><code class="language-julia-repl hljs">julia&gt; t_left = TimeArray([
+           TimeTick(DateTime(&quot;2024-1-1T1&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-1T2&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-1T3&quot;), OHLC(1, 2, 3, 4)),
+       ]);
+
+julia&gt; t_right = TimeArray([
+           TimeTick(DateTime(&quot;2024-1-1T2&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-1T3&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-1T4&quot;), OHLC(1, 2, 3, 4)),
+       ]);
+
+julia&gt; t_left + t_right
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-01T01:00:00, OHLC(NaN, NaN, NaN, NaN))
+ TimeTick(2024-01-01T02:00:00, OHLC(2.0, 4.0, 6.0, 8.0))
+ TimeTick(2024-01-01T03:00:00, OHLC(2.0, 4.0, 6.0, 8.0))
+ TimeTick(2024-01-01T04:00:00, OHLC(2.0, 4.0, 6.0, 8.0))</code></pre><pre><code class="language-julia-repl hljs">julia&gt; t_nan = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), OHLC(1, 1, 1, 1)),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), OHLC(NaN, NaN, NaN, NaN)),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), OHLC(NaN, NaN, NaN, NaN)),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), OHLC(10, 10, 10, 10)),
+       ]);
+
+julia&gt; ta_forward_fill(t_nan)
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-02T00:00:00, OHLC(1.0, 1.0, 1.0, 1.0))
+ TimeTick(2024-01-03T00:00:00, OHLC(10.0, 10.0, 10.0, 10.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(10.0, 10.0, 10.0, 10.0))
+ TimeTick(2024-01-05T00:00:00, OHLC(10.0, 10.0, 10.0, 10.0))
+
+julia&gt; ta_backward_fill(t_nan)
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-02T00:00:00, OHLC(1.0, 1.0, 1.0, 1.0))
+ TimeTick(2024-01-03T00:00:00, OHLC(1.0, 1.0, 1.0, 1.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(1.0, 1.0, 1.0, 1.0))
+ TimeTick(2024-01-05T00:00:00, OHLC(10.0, 10.0, 10.0, 10.0))
+
+julia&gt; ta_linear_fill(t_nan)
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-02T00:00:00, OHLC(1.0, 1.0, 1.0, 1.0))
+ TimeTick(2024-01-03T00:00:00, OHLC(4.0, 4.0, 4.0, 4.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(7.0, 7.0, 7.0, 7.0))
+ TimeTick(2024-01-05T00:00:00, OHLC(10.0, 10.0, 10.0, 10.0))</code></pre><pre><code class="language-julia-repl hljs">julia&gt; t_ohlc = TimeArray([
+           TimeTick(DateTime(&quot;2024-1-01&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-02&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-03&quot;), OHLC(1, 2, 3, 4)),
+           TimeTick(DateTime(&quot;2024-1-04&quot;), OHLC(1, 2, 3, 4)),
+       ]);
+
+julia&gt; ta_lag(t_ohlc, 2)
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-01T00:00:00, OHLC(NaN, NaN, NaN, NaN))
+ TimeTick(2024-01-02T00:00:00, OHLC(NaN, NaN, NaN, NaN))
+ TimeTick(2024-01-03T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))
+
+julia&gt; ta_rolling(sum, t_ohlc, 3)
+4-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-01T00:00:00, OHLC(NaN, NaN, NaN, NaN))
+ TimeTick(2024-01-02T00:00:00, OHLC(NaN, NaN, NaN, NaN))
+ TimeTick(2024-01-03T00:00:00, OHLC(3.0, 6.0, 9.0, 12.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(3.0, 6.0, 9.0, 12.0))
+
+julia&gt; ta_resample(x -&gt; isempty(x) ? ta_nan(x) : sum(x), t_ohlc, Day(2))
+2-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-01T00:00:00, OHLC(2.0, 4.0, 6.0, 8.0))
+ TimeTick(2024-01-03T00:00:00, OHLC(2.0, 4.0, 6.0, 8.0))
+
+julia&gt; ta_resample(sum, t_ohlc, Hour(12))
+7-element TimeArray{DateTime, OHLC}:
+ TimeTick(2024-01-01T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))
+ TimeTick(2024-01-01T12:00:00, OHLC(0.0, 0.0, 0.0, 0.0))
+ TimeTick(2024-01-02T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))
+ TimeTick(2024-01-02T12:00:00, OHLC(0.0, 0.0, 0.0, 0.0))
+ TimeTick(2024-01-03T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))
+ TimeTick(2024-01-03T12:00:00, OHLC(0.0, 0.0, 0.0, 0.0))
+ TimeTick(2024-01-04T00:00:00, OHLC(1.0, 2.0, 3.0, 4.0))</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../resample/">« Resample</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Monday 17 June 2024 20:35">Monday 17 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
