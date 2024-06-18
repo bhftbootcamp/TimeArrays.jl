@@ -144,44 +144,44 @@ Base.eltype(::Type{TimeTick{T,V}}) where {T,V} = Union{T,V}
 Base.isnan(x::TimeTick) = isnan(ta_value(x))
 Base.isinf(x::TimeTick) = isinf(ta_value(x))
 
-function Base.convert(::Type{TimeTick{T,V}}, value::TimeTick{T,V}) where {T<:TimeLike,V}
-    return value
+function Base.convert(::Type{TimeTick{T,V}}, x::TimeTick{T,V}) where {T<:TimeLike,V}
+    return x
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::TimeTick) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Tuple{TimeLike,Number}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::Tuple{TimeLike,Number}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick}, value::Tuple{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick}, x::Tuple{T,V}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Pair{<:TimeLike,<:Any}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::Pair{<:TimeLike,<:Any}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick}, value::Pair{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick}, x::Pair{T,V}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{Tuple}, value::TimeTick)
-    return Tuple(value)
+function Base.convert(::Type{Tuple}, x::TimeTick)
+    return Tuple(x)
 end
 
-function Base.convert(::Type{Tuple{T,V}}, value::TimeTick) where {T<:TimeLike,V}
-    return Tuple{T,V}(value)
+function Base.convert(::Type{Tuple{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return Tuple{T,V}(x)
 end
 
-function Base.convert(::Type{Pair}, value::TimeTick)
-    return Pair(ta_timestamp(value), ta_value(value))
+function Base.convert(::Type{Pair}, x::TimeTick)
+    return Pair(ta_timestamp(x), ta_value(x))
 end
 
-function Base.convert(::Type{Pair{T,V}}, value::TimeTick) where {T<:TimeLike,V}
-    return Pair{T,V}(ta_timestamp(value), ta_value(value))
+function Base.convert(::Type{Pair{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return Pair{T,V}(ta_timestamp(x), ta_value(x))
 end
 
 function Base.getindex(t::TimeTick, i::Integer)
