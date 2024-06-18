@@ -31,11 +31,11 @@ struct TimeTick{T<:TimeLike,V<:Any} <: AbstractTick{T,V}
     end
 
     function TimeTick{T,V}(x::Tuple{TimeLike,Any}) where {T<:TimeLike,V}
-        return new{T,V}(x...)
+        return new{T,V}(x[1], x[2])
     end
 
     function TimeTick{T,V}(x::NamedTuple{names,<:Tuple{TimeLike,Any}} where {names}) where {T<:TimeLike,V}
-        return new{T,V}(x...)
+        return new{T,V}(x[1], x[2])
     end
 
     function TimeTick{T,V}(x::Pair{<:TimeLike,<:Any}) where {T<:TimeLike,V}
@@ -86,7 +86,7 @@ TimeTick(2024-01-01T00:00:00, 100)
 ```
 """
 function TimeTick(x::Tuple{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(x...)
+    return TimeTick{T,V}(x[1], x[2])
 end
 
 """
@@ -107,7 +107,7 @@ TimeTick(2024-01-01T00:00:00, 100)
 ```
 """
 function TimeTick(x::NamedTuple{names,Tuple{T,V}}) where {names,T<:TimeLike,V}
-    return TimeTick{T,V}(x...)
+    return TimeTick{T,V}(x[1], x[2])
 end
 
 """
@@ -144,28 +144,44 @@ Base.eltype(::Type{TimeTick{T,V}}) where {T,V} = Union{T,V}
 Base.isnan(x::TimeTick) = isnan(ta_value(x))
 Base.isinf(x::TimeTick) = isinf(ta_value(x))
 
-function Base.convert(::Type{TimeTick{T,V}}, value::TimeTick{T,V}) where {T<:TimeLike,V}
-    return value
+function Base.convert(::Type{TimeTick{T,V}}, x::TimeTick{T,V}) where {T<:TimeLike,V}
+    return x
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::TimeTick{TimeLike,Any}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Tuple{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::Tuple{TimeLike,Number}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Tuple{TimeLike,Number}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick}, x::Tuple{T,V}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Pair{T,V}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick{T,V}}, x::Pair{<:TimeLike,<:Any}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
 end
 
-function Base.convert(::Type{TimeTick{T,V}}, value::Pair{TimeLike,Any}) where {T<:TimeLike,V}
-    return TimeTick{T,V}(value)
+function Base.convert(::Type{TimeTick}, x::Pair{T,V}) where {T<:TimeLike,V}
+    return TimeTick{T,V}(x)
+end
+
+function Base.convert(::Type{Tuple}, x::TimeTick)
+    return Tuple(x)
+end
+
+function Base.convert(::Type{Tuple{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return Tuple{T,V}(x)
+end
+
+function Base.convert(::Type{Pair}, x::TimeTick)
+    return Pair(ta_timestamp(x), ta_value(x))
+end
+
+function Base.convert(::Type{Pair{T,V}}, x::TimeTick) where {T<:TimeLike,V}
+    return Pair{T,V}(ta_timestamp(x), ta_value(x))
 end
 
 function Base.getindex(t::TimeTick, i::Integer)
@@ -203,7 +219,7 @@ end
 
 Supertype for `TimeArray{T,V}` with timestamps of type `T` and values of type `V`.
 """
-abstract type AbstractTimeArray{T,V} <: AbstractVector{TimeTick{T,V}} end
+abstract type AbstractTimeArray{T,V} <: AbstractVector{AbstractTick{T,V}} end
 
 """
     TimeArray{T,V} <: AbstractTimeArray{T,V}

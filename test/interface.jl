@@ -40,6 +40,26 @@
         @test TimeTick{Time,Int64}(TimeTick{NanoDate,Float64}(DateTime("2023-01-01"), 2))     == TimeTick(Time("00:00:00"), 2.0)
         @test TimeTick{DateTime,Int64}(TimeTick{NanoDate,Float64}(DateTime("2023-01-01"), 2)) == TimeTick(DateTime("2023-01-01"), 2.0)
     end
+
+    @testset "Case №5: TimeTick conversions" begin
+        common_tick = TimeTick{DateTime,Float64}(DateTime("2024-01-01T01:02:03"), 1.0)
+        @test convert(TimeTick{DateTime,Float64}, common_tick) == common_tick
+        @test convert(TimeTick{Date,Int64}, common_tick) == TimeTick{Date,Int64}(Date("2024-01-01"), 1)
+        @test convert(Tuple{Date,Int64}, common_tick) == (Date("2024-01-01"), 1)
+        @test convert(Tuple, common_tick) == (DateTime("2024-01-01T01:02:03"), 1.0)
+        @test convert(Pair{Date,Int64}, common_tick) == (Date("2024-01-01") => 1)
+        @test convert(Pair, common_tick) == (DateTime("2024-01-01T01:02:03") => 1.0)
+
+        tuple_tick = (DateTime("2024-01-01T01:02:03"), 1.0)
+        @test convert(TimeTick{DateTime,Float64}, tuple_tick) == common_tick
+        @test convert(TimeTick{Date,Int64}, tuple_tick) == TimeTick{Date,Int64}(Date("2024-01-01"), 1)
+        @test convert(TimeTick, tuple_tick) == TimeTick{DateTime,Float64}(DateTime("2024-01-01T01:02:03"), 1.0)
+
+        pair_tick = DateTime("2024-01-01T01:02:03") => 1.0
+        @test convert(TimeTick{DateTime,Float64}, pair_tick) == common_tick
+        @test convert(TimeTick{Date,Int64}, pair_tick) == TimeTick{Date,Int64}(Date("2024-01-01"), 1)
+        @test convert(TimeTick, pair_tick) == TimeTick{DateTime,Float64}(DateTime("2024-01-01T01:02:03"), 1.0)
+    end
 end
 
 @testset verbose = true "TimeArrays constructors" begin
