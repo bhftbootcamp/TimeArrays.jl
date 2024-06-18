@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Resample · TimeArrays.jl</title><meta name="title" content="Resample · TimeArrays.jl"/><meta property="og:title" content="Resample · TimeArrays.jl"/><meta property="twitter:title" content="Resample · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/resample/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/resample/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/pages/resample/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../interface/">Types</a></li><li><a class="tocitem" href="../arithmetic/">Arithmetic</a></li><li><a class="tocitem" href="../array/">Replace &amp; Fill</a></li><li><a class="tocitem" href="../rolling/">Rolling window</a></li><li class="is-active"><a class="tocitem" href>Resample</a><ul class="internal"><li><a class="tocitem" href="#Origin-of-the-new-time-grid"><span>Origin of the new time grid</span></a></li><li><a class="tocitem" href="#Period-of-the-new-time-grid"><span>Period of the new time grid</span></a></li><li><a class="tocitem" href="#Parameters-of-sub-intervals"><span>Parameters of sub-intervals</span></a></li><li><a class="tocitem" href="#Values-aggregation"><span>Values aggregation</span></a></li><li><a class="tocitem" href="#API"><span>API</span></a></li></ul></li></ul></li><li><span class="tocitem">For Developers</span><ul><li><a class="tocitem" href="../custom_types/">Custom types</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API Reference</a></li><li class="is-active"><a href>Resample</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Resample</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/pages/resample.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="resample"><a class="docs-heading-anchor" href="#resample">Resample</a><a id="resample-1"></a><a class="docs-heading-anchor-permalink" href="#resample" title="Permalink"></a></h1><p>Let&#39;s assume that you have some time series with arbitrary timestamps and you need to bring the values to a new aligned grid with a fixed period in time. For example, like this:</p><pre>
+
+ value:         1.0   2.0         3.0               4.0   5.0   6.0   7.0
+ grid:      - - X - - X - - - - - X - - - - - - - - X - - X - - X - - X - -
+ time:          1     2           4                 7     8     9     10
+
+</pre><p>To do this you will need a resampling method, which we will now look at in more detail. The resampling method can be broken down into four steps:</p><ul><li>selecting the origin of the time grid.</li><li>dividing the new grid into sub-intervals.</li><li>defining the parameters of these sub-intervals, such as the closed side and the label side.</li><li>Aggregation of values ​​falling into a new subinterval.</li></ul><h2 id="Origin-of-the-new-time-grid"><a class="docs-heading-anchor" href="#Origin-of-the-new-time-grid">Origin of the new time grid</a><a id="Origin-of-the-new-time-grid-1"></a><a class="docs-heading-anchor-permalink" href="#Origin-of-the-new-time-grid" title="Permalink"></a></h2><p>First you need to select the <code>origin</code> of the new grid:</p><ul><li><code>ORIGIN_OF_WINDOW (default)</code>: Origin of coordinates for the corresponding time type (Beginning of the year for dates, zero for numbers).</li><li><code>START_OF_WINDOW</code>: The first timestamp in the current time series.</li><li><code>END_OF_WINDOW</code>: The last timestamp in the current time series.</li></ul><pre>
+
+ value:        1.0   2.0         3.0               4.0   5.0   6.0   7.0
+ grid:    X - - X - - X - - - - - X - - - - - - - - X - - X - - X - - X - -
+ time:    0     1     2           4                 7     8     9     10
+          ^     ^                                                     ^
+          |     |                                                     |
+          |     START_OF_WINDOW                           END_OF_WINDOW
+          ORIGIN_OF_WINDOW (default)
+
+</pre><h2 id="Period-of-the-new-time-grid"><a class="docs-heading-anchor" href="#Period-of-the-new-time-grid">Period of the new time grid</a><a id="Period-of-the-new-time-grid-1"></a><a class="docs-heading-anchor-permalink" href="#Period-of-the-new-time-grid" title="Permalink"></a></h2><p>Then, relative to the selected origin, a grid with a step of the specified <code>period</code> will be created</p><pre>
+
+ value:            1.0   2.0         3.0               4.0   5.0   6.0   7.0
+ grid:        X - - X - - X - - - - - X - - - - - - - - X - - X - - X - - X - -
+ time:        0     1     2           4                 7     8     9     10
+
+</pre>
+
+<pre>
+
+ period = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
+              0           2           4           6           8           10
+
+ period = 3:  | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - - - -
+              0                 3                 6                 9
+              ^
+              |
+              ORIGIN_OF_WINDOW (default)
+
+</pre>
+
+<pre>
+
+ period = 2:  - - - | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - 
+                    1           3           5           7           9           
+
+ period = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
+                    1                 4                 7                 10
+                    ^
+                    |
+                    START_OF_WINDOW
+
+</pre>
+
+<pre>
+
+ period = 2:  | - - - - - | - - - - - | - - - - - | - - - - - | - - - - - | - -
+              0           2           4           6           8           10
+
+ period = 3:  - - - | - - - - - - - - | - - - - - - - - | - - - - - - - - | - - 
+                    1                 4                 7                 10
+                                                                          ^
+                                                                          |
+                                                              END_OF_WINDOW
+
+</pre><h2 id="Parameters-of-sub-intervals"><a class="docs-heading-anchor" href="#Parameters-of-sub-intervals">Parameters of sub-intervals</a><a id="Parameters-of-sub-intervals-1"></a><a class="docs-heading-anchor-permalink" href="#Parameters-of-sub-intervals" title="Permalink"></a></h2><p>Finally, it only remains to determine which side of the subintervals will be closed, as well as on which side the aggregation of the values ​​falling within the interval will occur. The following example shows how parameters <code>CLOSED_LEFT</code> and <code>CLOSED_RIGHT</code>, as well as <code>LABEL_LEFT</code> and <code>LABEL_RIGHT</code>, determine the behavior of the subintervals.</p><p>An example of the obtained sub-intervals with parameters <code>origin = ORIGIN_OF_WINDOW</code> and <code>period = 2</code>:</p><pre>
+
+ value:      1.0       2.0       3.0                       1.0       2.0       3.0
+ grid:    - - X - - - - X - - - - X - -   ➤   - - | - - - - X - - - - | - - - - X - - - - | - -
+ time:        1         2         3               0                   2                   4
+
+</pre><p>Possible options for decomposing values ​​into new sub-intervals for subsequent aggregation:</p><table>
+  <tr>
+    <th></th>
+    <th align=center>CLOSED_LEFT (default)</th>
+    <th align=center>CLOSED_RIGHT</th>
+  </tr>
+  <tr>
+    <th>LABEL_LEFT<br>(default)</th>
+    <td>
+<pre>
+
+ value:       1.0       2.0   3.0
+ grid:   [ - - - - - )[ - - - - - )  
+ time:    ⤷ 0          ⤷ 2 
+
+</pre>
+    </td>
+    <td>
+<pre>
+
+ value:    1.0   2.0       3.0
+ grid:   ( - - - - - ]( - - - - - ]  
+ time:    ⤷ 0          ⤷ 2 
+
+</pre>
+    </td>
+  </tr>
+  <tr>
+    <th>LABEL_RIGHT</th>
+    <td>
+<pre>
+
+ value:       1.0       2.0   3.0
+ grid:   [ - - - - - )[ - - - - - )  
+ time:            2 ⤶          4 ⤶ 
+
+</pre>
+    </td>
+    <td>
+<pre>
+
+ value:    1.0   2.0       3.0
+ grid:   ( - - - - - ]( - - - - - ]  
+ time:            2 ⤶          4 ⤶
+
+</pre>
+    </td>
+  </tr>
+</table><h2 id="Values-aggregation"><a class="docs-heading-anchor" href="#Values-aggregation">Values aggregation</a><a id="Values-aggregation-1"></a><a class="docs-heading-anchor-permalink" href="#Values-aggregation" title="Permalink"></a></h2><p>Finally, the old values ​​that fall into the new subinterval can be aggregated by applying some function, such as <code>sum</code>, <code>maximum</code>, <code>minimum</code>, <code>mean</code>, <code>median</code>, etc.</p><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_resample" href="#TimeArrays.ta_resample"><code>TimeArrays.ta_resample</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_resample(f::Function, t_array::TimeArray{T,V}, period::PeriodLike; kw...) -&gt; TimeArray</code></pre><p>Brings the values of <code>t_array</code> to a new time grid with new <code>period</code> using the function <code>f</code> on intermediate values of the old grid.</p><p>Function <code>f</code> must accept a vector with elements of type <code>V</code> as input and return a new value, which will be assigned to the corresponding timestamp of the each window. If it is impossible to calculate a new value based on the received vector (for example, the vector is empty), then the <code>NaN</code> value or an equivalent value (for custom types) must be returned.</p><p><strong>Keyword arguments</strong></p><ul><li><code>origin::ORIGIN_TYPE = ORIGIN_OF_WINDOW</code>: Start of new grid (Possible values: <code>ORIGIN_OF_WINDOW</code>, <code>START_OF_WINDOW</code>, <code>END_OF_WINDOW</code>).</li><li><code>closed::CLOSED_SIDE = CLOSED_LEFT</code>: Closed side of the half-open subintervals of new grid (Possible values: <code>CLOSED_LEFT</code>, <code>CLOSED_RIGHT</code>).</li><li><code>label::LABEL_SIDE = LABEL_LEFT</code>: Label side of the subintervals of new grid (Possible values: <code>LABEL_LEFT</code>, <code>LABEL_RIGHT</code>).</li></ul><p>For more information see <a href="#resample"><code>resample section</code></a>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; t_array = TimeArray{Int64,Int64}([(i, i) for i in 3:13])
+11-element TimeArray{Int64, Int64}:
+ TimeTick(3, 3)
+ TimeTick(4, 4)
+ TimeTick(5, 5)
+ TimeTick(6, 6)
+ TimeTick(7, 7)
+ TimeTick(8, 8)
+ TimeTick(9, 9)
+ TimeTick(10, 10)
+ TimeTick(11, 11)
+ TimeTick(12, 12)
+ TimeTick(13, 13)
+
+julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_LEFT)
+4-element TimeArray{Int64, Float64}:
+ TimeTick(0, 3.0)
+ TimeTick(4, 22.0)
+ TimeTick(8, 38.0)
+ TimeTick(12, 25.0)
+
+julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_RIGHT)
+4-element TimeArray{Int64, Float64}:
+ TimeTick(4, 3.0)
+ TimeTick(8, 22.0)
+ TimeTick(12, 38.0)
+ TimeTick(16, 25.0)
+
+julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_LEFT)
+4-element TimeArray{Int64, Float64}:
+ TimeTick(0, 7.0)
+ TimeTick(4, 26.0)
+ TimeTick(8, 42.0)
+ TimeTick(12, 13.0)
+
+julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_RIGHT)
+4-element TimeArray{Int64, Float64}:
+ TimeTick(4, 7.0)
+ TimeTick(8, 26.0)
+ TimeTick(12, 42.0)
+ TimeTick(16, 13.0)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray{DateTime,Int64}([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 4),
+           TimeTick(DateTime(&quot;2024-01-12&quot;), 5),
+           TimeTick(DateTime(&quot;2024-01-13&quot;), 6),
+           TimeTick(DateTime(&quot;2024-01-20&quot;), 7),
+       ]);
+
+julia&gt; ta_resample(x -&gt; isempty(x) ? NaN : maximum(x), t_array, Day(3))
+7-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, NaN)
+ TimeTick(2024-01-07T00:00:00, 4.0)
+ TimeTick(2024-01-10T00:00:00, 5.0)
+ TimeTick(2024-01-13T00:00:00, 6.0)
+ TimeTick(2024-01-16T00:00:00, NaN)
+ TimeTick(2024-01-19T00:00:00, 7.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/27774838d5c06ef96807fea25f6901bf995846d1/src/resample.jl#L173-L257">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../rolling/">« Rolling window</a><a class="docs-footer-nextpage" href="../custom_types/">Custom types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Tuesday 18 June 2024 09:06">Tuesday 18 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
