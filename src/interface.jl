@@ -168,20 +168,20 @@ function Base.convert(::Type{TimeTick{T,V}}, value::Pair{TimeLike,Any}) where {T
     return TimeTick{T,V}(value)
 end
 
-function Base.convert(::Type{Tuple}, timetick::TimeTick)
-    return Tuple(timetick)
+function Base.convert(::Type{Tuple}, value::TimeTick)
+    return Tuple(value)
 end
 
-function Base.convert(::Type{Tuple{T,V}}, timetick::TimeTick) where {T<:TimeLike,V}
-    return Tuple{T,V}(timetick)
+function Base.convert(::Type{Tuple{T,V}}, value::TimeTick) where {T<:TimeLike,V}
+    return Tuple{T,V}(value)
 end
 
-function Base.convert(::Type{Pair}, timetick::TimeTick)
-    return Pair(x.first, x.second)
+function Base.convert(::Type{Pair}, value::TimeTick)
+    return Pair(value.first, value.second)
 end
 
-function Base.convert(::Type{Pair{T,V}}, timetick::TimeTick) where {T<:TimeLike,V}
-    return Pair{T,V}(x.first, x.second)
+function Base.convert(::Type{Pair{T,V}}, value::TimeTick) where {T<:TimeLike,V}
+    return Pair{T,V}(value.first, value.second)
 end
 
 function Base.getindex(t::TimeTick, i::Integer)
