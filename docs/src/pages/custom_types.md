@@ -3,7 +3,7 @@
 Not only Numbers, but also custom types can be used as time series values.
 However, it is worth noting that for the full correct use of custom types as `TimeArrays` values, it is necessary to define some methods, which will be listed below.
 
-## Required metods
+## Required methods
 
 To work with the main functions of the package, you need to define the following methods:
 
