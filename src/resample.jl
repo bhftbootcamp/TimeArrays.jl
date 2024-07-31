@@ -57,11 +57,7 @@ end
     return typemin(T)
 end
 
-@inline function fit_origin(t_array::TimeArray{T,V}, ::Val{ORIGIN_OF_WINDOW}) where {T<:Date,V<:Any}
-    return trunc(ta_timestamp(t_array[begin]), Year)
-end
-
-@inline function fit_origin(t_array::TimeArray{T,V}, ::Val{ORIGIN_OF_WINDOW}) where {T<:DateTime,V<:Any}
+@inline function fit_origin(t_array::TimeArray{T,V}, ::Val{ORIGIN_OF_WINDOW}) where {T<:TimeType,V<:Any}
     return trunc(ta_timestamp(t_array[begin]), Year)
 end
 
