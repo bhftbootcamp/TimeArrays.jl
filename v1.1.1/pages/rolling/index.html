@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Rolling window · TimeArrays.jl</title><meta name="title" content="Rolling window · TimeArrays.jl"/><meta property="og:title" content="Rolling window · TimeArrays.jl"/><meta property="twitter:title" content="Rolling window · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/rolling/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/rolling/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/pages/rolling/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../interface/">Types</a></li><li><a class="tocitem" href="../arithmetic/">Arithmetic</a></li><li><a class="tocitem" href="../array/">Replace &amp; Fill</a></li><li class="is-active"><a class="tocitem" href>Rolling window</a></li><li><a class="tocitem" href="../resample/">Resample</a></li></ul></li><li><span class="tocitem">For Developers</span><ul><li><a class="tocitem" href="../custom_types/">Custom types</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API Reference</a></li><li class="is-active"><a href>Rolling window</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Rolling window</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/pages/rolling.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Rolling-window"><a class="docs-heading-anchor" href="#Rolling-window">Rolling window</a><a id="Rolling-window-1"></a><a class="docs-heading-anchor-permalink" href="#Rolling-window" title="Permalink"></a></h1><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_rolling" href="#TimeArrays.ta_rolling"><code>TimeArrays.ta_rolling</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_rolling(f::Function, t_array::TimeArray, n::Int; kw...) -&gt; TimeArray</code></pre><p>Applies function <code>f</code> in a sliding window with window size <code>n</code> to the elements of <code>t_array</code>. Function <code>f</code> must accept a vector with elements of type <code>V</code> as input and return a new value, which will be assigned to the corresponding timestamp of each window.</p><p><strong>Keyword arguments</strong></p><ul><li><code>observations::Integer = n</code>: Number of observations in the rolling window to calculate the value (otherwise <code>NaN</code>).</li></ul><p>Function signature:</p><pre><code class="language-julia hljs">f(x::AbstractVector{V})::Any = ...</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-07&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_rolling(sum, t_array, 3)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, NaN)
+ TimeTick(2024-01-04T00:00:00, 6.0)
+ TimeTick(2024-01-07T00:00:00, 9.0)
+ TimeTick(2024-01-09T00:00:00, 12.0)
+
+julia&gt; ta_rolling(sum, t_array, 3; observations = 1)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, 6.0)
+ TimeTick(2024-01-07T00:00:00, 9.0)
+ TimeTick(2024-01-09T00:00:00, 12.0)
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L3-L47">source</a></section><section><div><pre><code class="language-julia hljs">ta_rolling(f::Function, t_array::TimeArray, p::Period; kw...) -&gt; TimeArray</code></pre><p>Applies function <code>f</code> in a sliding window with window period <code>p</code> to the elements of <code>t_array</code>. Function <code>f</code> must accept a vector with elements of type <code>V</code> as input and return a new value, which will be assigned to the corresponding timestamp of each window.</p><p>Function signature:</p><pre><code class="language-julia hljs">f(x::AbstractVector{V})::Any = ...</code></pre><p><strong>Keyword arguments</strong></p><ul><li><code>observations::Integer = 1</code>: Number of observations in the rolling window to calculate the value (otherwise <code>NaN</code>).</li></ul><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>The first elements of the <code>t_array</code> during period <code>p</code> will always be replaced by <code>NaN</code> values (not enough elements in the window).</p></div></div><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-07&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_rolling(sum, t_array, Day(3))
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, 5.0)
+ TimeTick(2024-01-07T00:00:00, 4.0)
+ TimeTick(2024-01-09T00:00:00, 9.0)
+
+julia&gt; ta_rolling(sum, t_array, Day(3); observations = 2)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, 5.0)
+ TimeTick(2024-01-07T00:00:00, NaN)
+ TimeTick(2024-01-09T00:00:00, 9.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L73-L119">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_sma" href="#TimeArrays.ta_sma"><code>TimeArrays.ta_sma</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_sma(t_array::TimeArray, n::Integer; kw...) -&gt; TimeArray
+ta_sma(t_array::TimeArray, p::Period; kw...) -&gt; TimeArray</code></pre><p>Applies <a href="https://en.wikipedia.org/wiki/Moving_average">Simple Moving Average</a> algorithm with window size <code>n</code> or period <code>p</code> to the elements of <code>t_array</code>.</p><p><strong>Keyword arguments</strong></p><ul><li>See <a href="#TimeArrays.ta_rolling"><code>ta_rolling</code></a> for more information.</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-06&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_sma(t_array, 2)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, 1.5)
+ TimeTick(2024-01-05T00:00:00, 2.5)
+ TimeTick(2024-01-06T00:00:00, 3.5)
+ TimeTick(2024-01-09T00:00:00, 4.5)
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-06&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_sma(t_array, Day(3))
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, 1.5)
+ TimeTick(2024-01-05T00:00:00, 2.5)
+ TimeTick(2024-01-06T00:00:00, 3.5)
+ TimeTick(2024-01-09T00:00:00, 5.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L160-L206">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_wma" href="#TimeArrays.ta_wma"><code>TimeArrays.ta_wma</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_wma(t_array::TimeArray, n::Integer; kw...) -&gt; TimeArray
+ta_wma(t_array::TimeArray, p::Period; kw...) -&gt; TimeArray</code></pre><p>Applies <a href="https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average">Weighted Moving Average</a> algorithm with window size <code>n</code> or period <code>p</code> to the elements of <code>t_array</code>.</p><p><strong>Keyword arguments</strong></p><ul><li>See <a href="#TimeArrays.ta_rolling"><code>ta_rolling</code></a> for more information.</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-06&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_wma(t_array, 3)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, NaN)
+ TimeTick(2024-01-05T00:00:00, 2.333333333333333)
+ TimeTick(2024-01-06T00:00:00, 3.333333333333333)
+ TimeTick(2024-01-09T00:00:00, 4.333333333333333)
+
+julia&gt; ta_wma(t_array, Day(3); observations = 2)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, NaN)
+ TimeTick(2024-01-03T00:00:00, 1.6666666666666665)
+ TimeTick(2024-01-05T00:00:00, 2.6666666666666665)
+ TimeTick(2024-01-06T00:00:00, 3.6666666666666665)
+ TimeTick(2024-01-09T00:00:00, NaN)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L247-L284">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_ema" href="#TimeArrays.ta_ema"><code>TimeArrays.ta_ema</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_ema(t_array::TimeArray, window::Integer) -&gt; TimeArray</code></pre><p>Applies <a href="https://en.wikipedia.org/wiki/Exponential_smoothing">Exponential Moving Average</a> algorithm with window size <code>n</code> to the elements of <code>t_array</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-05&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-06&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 5.0),
+       ]);
+
+julia&gt; ta_ema(t_array, 3)
+5-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 1.0)
+ TimeTick(2024-01-03T00:00:00, 1.5)
+ TimeTick(2024-01-05T00:00:00, 2.25)
+ TimeTick(2024-01-06T00:00:00, 3.125)
+ TimeTick(2024-01-09T00:00:00, 4.0625)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L211-L236">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_lag" href="#TimeArrays.ta_lag"><code>TimeArrays.ta_lag</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_lag(t_array::TimeArray, n::Integer) -&gt; TimeArray</code></pre><p>Shifts the values of <code>t_array</code> elements by <code>n</code> positions forward. Displaced elements that remain without a value are set to <code>NaN</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-03-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-03-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-03-03&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-03-04&quot;), 4.0),
+       ]);
+
+julia&gt; ta_lag(t_array, 2)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-03-01T00:00:00, NaN)
+ TimeTick(2024-03-02T00:00:00, NaN)
+ TimeTick(2024-03-03T00:00:00, 1.0)
+ TimeTick(2024-03-04T00:00:00, 2.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L296-L321">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_lead" href="#TimeArrays.ta_lead"><code>TimeArrays.ta_lead</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_lead(t_array::TimeArray{T,V}, n::Integer) -&gt; TimeArray</code></pre><p>Shifts the values of <code>t_array</code> elements by <code>n</code> positions backward. Displaced elements that remain without a value are set to <code>NaN</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-03-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-03-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-03-03&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-03-04&quot;), 4.0),
+       ]);
+
+julia&gt; ta_lead(t_array, 2)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-03-01T00:00:00, 3.0)
+ TimeTick(2024-03-02T00:00:00, 4.0)
+ TimeTick(2024-03-03T00:00:00, NaN)
+ TimeTick(2024-03-04T00:00:00, NaN)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/2d17c2b8703b1ada169393cfbbe1aadacf339546/src/rolling.jl#L337-L362">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../array/">« Replace &amp; Fill</a><a class="docs-footer-nextpage" href="../resample/">Resample »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 31 July 2024 16:42">Wednesday 31 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
