@@ -63,6 +63,114 @@ function Base.replace(f::Function, t_array::TimeArray; count = length(t_array))
 end
 
 """
+    append!(t_array::TimeArray, items::AbstractVector{TimeTick}) -> TimeArray
+
+Add new values from `items` to `t_array` and sorts them by date in ascending order.
+
+!!! warning
+    Avoid inserting data in small batches, as each call to the append method triggers sorting.
+
+## Examples
+
+```jldoctest
+julia> using Dates
+
+julia> t_array = TimeArray([
+           TimeTick(DateTime("2024-01-01"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-03"), 3.0),
+       ]);
+
+julia> a_values = [
+           TimeTick(DateTime("2024-01-01"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-03"), 3.0),
+       ];
+
+julia> append!(t_array, a_values)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+```
+"""
+function Base.append!(t_array::TimeArray{T,V}, items::AbstractVector{TimeTick{T,V}}) where {T,V}
+    values = ta_values(t_array)
+    append!(values, items)
+    return TimeArray{T,V}(values)
+end
+
+"""
+    vcat(l_array::TimeArray, r_array::TimeArray) -> TimeArray
+
+Concatenates two `TimeArray` objects vertically.
+
+## Examples
+
+```jldoctest
+julia> using Dates
+
+julia> t_array_1 = TimeArray([
+           TimeTick(DateTime("2024-01-01"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-03"), 3.0),
+       ]);
+
+julia> t_array_2 = TimeArray([
+           TimeTick(DateTime("2024-01-04"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-01"), 3.0),
+       ]);
+
+julia> vcat(t_array_1, t_array_2)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-01T00:00:00, 3.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, 1.0)
+```
+"""
+function Base.vcat(l_array::TimeArray{T1,V1}, r_array::TimeArray{T2,V2}) where {T1,V1,T2,V2}
+    values = vcat(ta_values(l_array), ta_values(r_array))
+    return TimeArray{promote_type(T1,T2),promote_type(V1,V2)}(values)
+end
+
+"""
+    cumsum(t_array::TimeArray; kw...) -> TimeArray
+
+Cumulative sum along the TimeTick values.
+
+## Examples
+
+```jldoctest
+julia> using Dates
+
+julia> t_array = TimeArray([
+           TimeTick(DateTime("2024-01-01"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-03"), 3.0),
+       ]);
+
+julia> cumsum(t_array)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, 3.0)
+ TimeTick(2024-01-03T00:00:00, 6.0)
+```
+"""
+function Base.cumsum(t_array::TimeArray{T,V}; kw...) where {T,V}
+    values = ta_values(t_array)
+    timestamps = map(ta_timestamp, values)
+    timevalues = map(ta_value, values)
+    return TimeArray(timestamps, cumsum(timevalues; kw...))
+end
+
+"""
     ta_backward_fill([, pattern::Function], t_array::TimeArray) -> TimeArray
 
 Return an array where elements that match `pattern` are replaced by nearest previous non-pattern value in `t_array`.
