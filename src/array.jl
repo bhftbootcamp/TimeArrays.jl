@@ -63,9 +63,9 @@ function Base.replace(f::Function, t_array::TimeArray; count = length(t_array))
 end
 
 """
-    append!(t_array::TimeArray, items::AbstractVector{TimeTick}) -> TimeArray
+    append!(t_array::TimeArray, new_ticks::AbstractVector{TimeTick}) -> TimeArray
 
-Add new values from `items` to `t_array` and sorts them by date in ascending order.
+Add new values from `items` to `new_ticks` and sorts them by date in ascending order.
 
 !!! warning
     Avoid inserting data in small batches, as each call to the append method triggers sorting.
@@ -81,13 +81,13 @@ julia> t_array = TimeArray([
            TimeTick(DateTime("2024-01-03"), 3.0),
        ]);
 
-julia> a_values = [
+julia> new_ticks = [
            TimeTick(DateTime("2024-01-01"), 1.0),
            TimeTick(DateTime("2024-01-02"), 2.0),
            TimeTick(DateTime("2024-01-03"), 3.0),
        ];
 
-julia> append!(t_array, a_values)
+julia> append!(t_array, new_ticks)
 6-element Vector{TimeTick{DateTime, Float64}}:
  TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-01T00:00:00, 1.0)
@@ -97,9 +97,9 @@ julia> append!(t_array, a_values)
  TimeTick(2024-01-03T00:00:00, 3.0)
 ```
 """
-function Base.append!(t_array::TimeArray{T,V}, items::AbstractVector{TimeTick{T,V}}) where {T,V}
+function Base.append!(t_array::TimeArray{T,V}, new_ticks::AbstractVector{TimeTick{T,V}}) where {T,V}
     values = ta_values(t_array)
-    append!(values, items)
+    append!(values, new_ticks)
     return TimeArray{T,V}(values)
 end
 
