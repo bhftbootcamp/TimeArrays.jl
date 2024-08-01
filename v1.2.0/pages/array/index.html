@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Replace &amp; Fill · TimeArrays.jl</title><meta name="title" content="Replace &amp; Fill · TimeArrays.jl"/><meta property="og:title" content="Replace &amp; Fill · TimeArrays.jl"/><meta property="twitter:title" content="Replace &amp; Fill · TimeArrays.jl"/><meta name="description" content="Documentation for TimeArrays.jl."/><meta property="og:description" content="Documentation for TimeArrays.jl."/><meta property="twitter:description" content="Documentation for TimeArrays.jl."/><meta property="og:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/array/"/><meta property="twitter:url" content="https://bhftbootcamp.github.io/TimeArrays.jl/pages/array/"/><link rel="canonical" href="https://bhftbootcamp.github.io/TimeArrays.jl/pages/array/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TimeArrays.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../interface/">Types</a></li><li><a class="tocitem" href="../arithmetic/">Arithmetic</a></li><li class="is-active"><a class="tocitem" href>Replace &amp; Fill</a></li><li><a class="tocitem" href="../rolling/">Rolling window</a></li><li><a class="tocitem" href="../resample/">Resample</a></li></ul></li><li><span class="tocitem">For Developers</span><ul><li><a class="tocitem" href="../custom_types/">Custom types</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API Reference</a></li><li class="is-active"><a href>Replace &amp; Fill</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Replace &amp; Fill</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/master/docs/src/pages/array.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Replace-and-Fill"><a class="docs-heading-anchor" href="#Replace-and-Fill">Replace &amp; Fill</a><a id="Replace-and-Fill-1"></a><a class="docs-heading-anchor-permalink" href="#Replace-and-Fill" title="Permalink"></a></h1><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="Base.replace" href="#Base.replace"><code>Base.replace</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">replace(t_array::TimeArray, old_new::Pair...; [, count]) -&gt; TimeArray</code></pre><p>Return a copy of <code>t_array</code> which has all values of <code>old</code> replaced by <code>new</code> in accordance with <code>old_new</code> pair. If <code>count</code> is specified, then replace at most <code>count</code> occurrences in total.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ]);
+
+julia&gt; replace(t_array, 1.0 =&gt; 10.0, 2.0 =&gt; -2.0)
+3-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, 10.0)
+ TimeTick(2024-01-02T00:00:00, -2.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L3-L26">source</a></section><section><div><pre><code class="language-julia hljs">replace(f::Function, t_array::TimeArray; [, count]) -&gt; TimeArray</code></pre><p>Return a new array where each element is the result of function <code>f</code> applied to elements of <code>t_array</code>. If <code>count</code> is specified, then replace at most <code>count</code> occurrences in total.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ]);
+
+julia&gt; replace(x -&gt; isodd(x) ? -x : x, t_array)
+3-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, -1.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, -3.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L34-L57">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="Base.append!" href="#Base.append!"><code>Base.append!</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">append!(t_array::TimeArray, new_ticks::AbstractVector{TimeTick}) -&gt; TimeArray</code></pre><p>Add new values from <code>items</code> to <code>new_ticks</code> and sorts them by date in ascending order.</p><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>Avoid inserting data in small batches, as each call to the append method triggers sorting.</p></div></div><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ]);
+
+julia&gt; new_ticks = [
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ];
+
+julia&gt; append!(t_array, new_ticks)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L65-L99">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="Base.vcat" href="#Base.vcat"><code>Base.vcat</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">vcat(l_array::TimeArray, r_array::TimeArray) -&gt; TimeArray</code></pre><p>Concatenates two <code>TimeArray</code> objects vertically.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array_1 = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ]);
+
+julia&gt; t_array_2 = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-04&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 3.0),
+       ]);
+
+julia&gt; vcat(t_array_1, t_array_2)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-01T00:00:00, 3.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, 3.0)
+ TimeTick(2024-01-04T00:00:00, 1.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L106-L137">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="Base.cumsum" href="#Base.cumsum"><code>Base.cumsum</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">cumsum(t_array::TimeArray; kw...) -&gt; TimeArray</code></pre><p>Cumulative sum along the TimeTick values.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+       ]);
+
+julia&gt; cumsum(t_array)
+6-element Vector{TimeTick{DateTime, Float64}}:
+ TimeTick(2024-01-01T00:00:00, 1.0)
+ TimeTick(2024-01-02T00:00:00, 3.0)
+ TimeTick(2024-01-03T00:00:00, 6.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L143-L165">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_backward_fill" href="#TimeArrays.ta_backward_fill"><code>TimeArrays.ta_backward_fill</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_backward_fill([, pattern::Function], t_array::TimeArray) -&gt; TimeArray</code></pre><p>Return an array where elements that match <code>pattern</code> are replaced by nearest previous non-pattern value in <code>t_array</code>. By default <code>pattern</code> is <code>isnan</code> function.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-07&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-10&quot;), 5.0),
+       ]);
+
+julia&gt; ta_backward_fill(t_array)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-03T00:00:00, 1.0)
+ TimeTick(2024-01-07T00:00:00, 1.0)
+ TimeTick(2024-01-09T00:00:00, 1.0)
+ TimeTick(2024-01-10T00:00:00, 5.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L173-L198">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_forward_fill" href="#TimeArrays.ta_forward_fill"><code>TimeArrays.ta_forward_fill</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_forward_fill([, pattern::Function], t_array::TimeArray) -&gt; TimeArray</code></pre><p>Return an array where elements that match <code>pattern</code> are replaced by nearest next non-pattern value in <code>t_array</code>. By default <code>pattern</code> is <code>isnan</code> function.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-08&quot;), 7.0),
+       ]);
+
+julia&gt; ta_forward_fill(t_array)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-01T00:00:00, 2.0)
+ TimeTick(2024-01-03T00:00:00, 7.0)
+ TimeTick(2024-01-04T00:00:00, 7.0)
+ TimeTick(2024-01-08T00:00:00, 7.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L215-L240">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_linear_fill" href="#TimeArrays.ta_linear_fill"><code>TimeArrays.ta_linear_fill</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_linear_fill([, pattern::Function], t_array::TimeArray) -&gt; TimeArray</code></pre><p>Return an array where elements that match <code>pattern</code> are replaced by linear interpolation between nearest not-pattern values in <code>t_array</code>. By default <code>pattern</code> is <code>isnan</code> function.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+
+julia&gt; t_array = TimeArray([
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-04&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-06&quot;), NaN),
+           TimeTick(DateTime(&quot;2024-01-08&quot;), 8.0),
+       ]);
+
+julia&gt; ta_linear_fill(t_array)
+4-element TimeArray{DateTime, Float64}:
+ TimeTick(2024-01-02T00:00:00, 2.0)
+ TimeTick(2024-01-04T00:00:00, 4.0)
+ TimeTick(2024-01-06T00:00:00, 6.0)
+ TimeTick(2024-01-08T00:00:00, 8.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/array.jl#L257-L282">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../arithmetic/">« Arithmetic</a><a class="docs-footer-nextpage" href="../rolling/">Rolling window »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Thursday 1 August 2024 19:10">Thursday 1 August 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
