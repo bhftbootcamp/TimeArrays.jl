@@ -16,7 +16,7 @@
             TimeTick(Time(3), 3.0),
         ]),
     ) == a
-end
+    end
     @testset "Case №2: Replacing NaN's" begin
         a = TimeArray([
             TimeTick(Time(1), 1.0),
@@ -113,5 +113,114 @@ end
         ]),
         ta_forward_fill(isinf, ta_nan),
         )
+    end
+
+    @testset "Case №1: Append method" begin
+        a = TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+        ])
+
+        new_values = [
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+        ]
+
+        append!(a, new_values)
+
+        @test a == TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+            TimeTick(Time(3), 1.0),
+        ])
+
+        new_values2 = [
+            TimeTick(Time(3), 3.0),
+            TimeTick(Time(5), 5.0),
+            TimeTick(Time(4), 1.8),
+        ]
+
+        append!(a, new_values2)
+
+        @test a == TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+            TimeTick(Time(3), 1.0),
+            TimeTick(Time(3), 3.0),
+            TimeTick(Time(4), 1.8),
+            TimeTick(Time(5), 5.0),
+        ])
+    end
+
+    @testset "Case №1: Vcat method" begin
+        a = TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+        ])
+
+        b = TimeArray([
+            TimeTick(Time(4), 3.0),
+            TimeTick(Time(5), 3.0),
+            TimeTick(Time(6), 3.0),
+        ])
+
+        @test vcat(a, b) == TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+            TimeTick(Time(4), 3.0),
+            TimeTick(Time(5), 3.0),
+            TimeTick(Time(6), 3.0),
+        ])
+
+        c = TimeArray([
+            TimeTick(Time(1), 3.0),
+            TimeTick(Time(3), 5.0),
+            TimeTick(Time(2), 1.0),
+        ])
+
+        @test vcat(a, c) == TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(1), 3.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+            TimeTick(Time(3), 5.0),
+        ])
+    end
+
+    @testset "Case №1: Vcat method" begin
+        a = TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 1.0),
+            TimeTick(Time(3), 1.0),
+        ])
+
+        @test isequal(cumsum(a), TimeArray([
+            TimeTick(Time(1), 1.0),
+            TimeTick(Time(2), 2.0),
+            TimeTick(Time(3), 3.0),
+        ]))
+
+        b = TimeArray([
+            TimeTick(Time(1), 3.0),
+            TimeTick(Time(2), NaN),
+            TimeTick(Time(3), 4.0),
+        ])
+
+        @test isequal(cumsum(b), TimeArray([
+            TimeTick(Time(1), 3.0),
+            TimeTick(Time(2), NaN),
+            TimeTick(Time(3), NaN),
+        ]))
     end
 end

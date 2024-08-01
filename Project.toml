@@ -1,6 +1,6 @@
 name = "TimeArrays"
 uuid = "058eeebf-2231-41de-8410-62311c15f51e"
-version = "1.1.1"
+version = "1.2.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
