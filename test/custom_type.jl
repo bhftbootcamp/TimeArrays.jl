@@ -172,7 +172,7 @@
         )
 
         @test isequal(
-            ta_resample(x -> isempty(x) ? ta_nan(x) : maximum(x), ta_ohlc, Minute(40)),
+            ta_resample(x -> isempty(x) ? TimeArrays.ta_nan(x) : maximum(x), ta_ohlc, Minute(40)),
             TimeArray([
                 TimeTick(DateTime(2024, 1, 1, 0, 40), OHLC(1.0, 2.0, 3.0, 4.0)),
                 TimeTick(DateTime(2024, 1, 1, 1, 20), OHLC(NaN, NaN, NaN, NaN)),
