@@ -193,8 +193,6 @@ struct OHLC
     close::Float64
 end
 
-TimeArrays.ta_nan(::Type{OHLC}) = OHLC(NaN, NaN, NaN, NaN)
-
 function ohlc(x::AbstractVector{<:Number})
     return if isempty(x)
         ta_nan(OHLC)
@@ -202,6 +200,9 @@ function ohlc(x::AbstractVector{<:Number})
         OHLC(x[1], maximum(x), minimum(x), x[end])
     end
 end
+
+TimeArrays.ta_nan(::Type{OHLC}) = OHLC(NaN, NaN, NaN, NaN)
+TimeArrays.return_type(::typeof(ohlc), ::Type{<:Number}) = OHLC
 
 julia> prices = ta_price_sample_data()
 7777-element TimeArray{DateTime, Float64}:
