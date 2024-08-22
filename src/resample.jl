@@ -199,45 +199,45 @@ julia> t_array = TimeArray{Int64,Int64}([(i, i) for i in 3:13])
  TimeTick(13, 13)
 
 julia> ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_LEFT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(0, 3.0)
- TimeTick(4, 22.0)
- TimeTick(8, 38.0)
- TimeTick(12, 25.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(0, 3)
+ TimeTick(4, 22)
+ TimeTick(8, 38)
+ TimeTick(12, 25)
 
 julia> ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_RIGHT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(4, 3.0)
- TimeTick(8, 22.0)
- TimeTick(12, 38.0)
- TimeTick(16, 25.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(4, 3)
+ TimeTick(8, 22)
+ TimeTick(12, 38)
+ TimeTick(16, 25)
 
 julia> ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_LEFT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(0, 7.0)
- TimeTick(4, 26.0)
- TimeTick(8, 42.0)
- TimeTick(12, 13.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(0, 7)
+ TimeTick(4, 26)
+ TimeTick(8, 42)
+ TimeTick(12, 13)
 
 julia> ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_RIGHT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(4, 7.0)
- TimeTick(8, 26.0)
- TimeTick(12, 42.0)
- TimeTick(16, 13.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(4, 7)
+ TimeTick(8, 26)
+ TimeTick(12, 42)
+ TimeTick(16, 13)
 ```
 
 ```jldoctest
 julia> using Dates
 
-julia> t_array = TimeArray{DateTime,Int64}([
-           TimeTick(DateTime("2024-01-01"), 1),
-           TimeTick(DateTime("2024-01-02"), 2),
-           TimeTick(DateTime("2024-01-03"), 3),
-           TimeTick(DateTime("2024-01-09"), 4),
-           TimeTick(DateTime("2024-01-12"), 5),
-           TimeTick(DateTime("2024-01-13"), 6),
-           TimeTick(DateTime("2024-01-20"), 7),
+julia> t_array = TimeArray{DateTime,Float64}([
+           TimeTick(DateTime("2024-01-01"), 1.0),
+           TimeTick(DateTime("2024-01-02"), 2.0),
+           TimeTick(DateTime("2024-01-03"), 3.0),
+           TimeTick(DateTime("2024-01-09"), 4.0),
+           TimeTick(DateTime("2024-01-12"), 5.0),
+           TimeTick(DateTime("2024-01-13"), 6.0),
+           TimeTick(DateTime("2024-01-20"), 7.0),
        ]);
 
 julia> ta_resample(x -> isempty(x) ? NaN : maximum(x), t_array, Day(3))
@@ -260,7 +260,7 @@ function ta_resample(
     label::LABEL_SIDE = LABEL_LEFT,
 ) where {T<:TimeLike,V}
     isempty(t_array) && return t_array
-    V2 = promote_nan(return_type(f, V))
+    V2 = return_type(f, V)
 
     t₀, tₙ, n = fit_time_interval(t_array, period, origin, Bool(closed))
     closed_left = Bool(closed)

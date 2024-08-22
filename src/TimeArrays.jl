@@ -22,7 +22,8 @@ export ta_rolling,
 
 export ta_resample
 
-export ta_nan
+export ta_nan,
+    return_type
 
 export START_OF_WINDOW,
     END_OF_WINDOW,
@@ -51,18 +52,23 @@ const TimeLike = Union{Real,TimeType}
 """
 const PeriodLike = Union{Real,Period}
 
-ta_nan(::AbstractVector{T}) where {T} = ta_nan(T)
-ta_nan(::Type{T}) where {T<:Complex} = Complex(NaN, NaN)
-ta_nan(::Type{T}) where {T<:Number} = NaN
+ta_nan(::AbstractArray{T}) where {T} = ta_nan(T)
+ta_nan(::Type{<:Complex}) = Complex(NaN, NaN)
+ta_nan(::Type{<:Number})  = NaN
+ta_nan(::T) where {T} = ta_nan(T)
 
 promote_nan(::Type{T}) where {T} = promote_type(T, typeof(ta_nan(T)))
 
-function return_type(f::Function, ::Type{V1}, ::Type{V2}) where {V1,V2}
-    return typeof(f(zero(V1), zero(V2)))
+function return_type(::Type{F}, types::Type...) where {F<:Function}
+    return promote_type(types...)
 end
 
-function return_type(f::Function, ::Type{V}) where {V}
-    return typeof(f([zero(V)]))
+function return_type(f::Function, types::Type...)
+    return return_type(typeof(f), types...)
+end
+
+function return_type(f::Function, ::Type{AbstractVector{T}}) where {T}
+    return return_type(typeof(f), T)
 end
 
 include("interface.jl")
