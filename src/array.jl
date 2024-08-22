@@ -88,7 +88,7 @@ julia> new_ticks = [
        ];
 
 julia> append!(t_array, new_ticks)
-6-element Vector{TimeTick{DateTime, Float64}}:
+6-element TimeArray{DateTime, Float64}:
  TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-02T00:00:00, 2.0)
@@ -126,7 +126,7 @@ julia> t_array_2 = TimeArray([
        ]);
 
 julia> vcat(t_array_1, t_array_2)
-6-element Vector{TimeTick{DateTime, Float64}}:
+6-element TimeArray{DateTime, Float64}:
  TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-01T00:00:00, 3.0)
  TimeTick(2024-01-02T00:00:00, 2.0)
@@ -157,7 +157,7 @@ julia> t_array = TimeArray([
        ]);
 
 julia> cumsum(t_array)
-6-element Vector{TimeTick{DateTime, Float64}}:
+3-element TimeArray{DateTime, Float64}:
  TimeTick(2024-01-01T00:00:00, 1.0)
  TimeTick(2024-01-02T00:00:00, 3.0)
  TimeTick(2024-01-03T00:00:00, 6.0)

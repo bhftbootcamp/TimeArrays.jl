@@ -170,7 +170,7 @@ julia> ta_resample(sum, t_ohlc, Hour(12))
 
 ## Custom methods
 
-If you are going to use in [`ta_resampling`](@ref) or [`ta_rolling`](@ref) some custom reducing function `my_func(...)` that takes a vector of elements of type `V1` and returns a value of another type `V2`, then you will need to define a new method `TimeArrays.return_type` that will return type `V2`:
+If you are going to use in [`ta_resample`](@ref) or [`ta_rolling`](@ref) some custom reducing function `my_func(...)` that takes a vector of elements of type `V1` and returns a value of another type `V2`, then you will need to define a new method `TimeArrays.return_type` that will return type `V2`:
 
 ```julia
 function my_func(x::AbstractVector{V1})::V2
