@@ -22,6 +22,8 @@ export ta_rolling,
 
 export ta_resample
 
+export ta_nan
+
 export START_OF_WINDOW,
     END_OF_WINDOW,
     ORIGIN_OF_WINDOW
