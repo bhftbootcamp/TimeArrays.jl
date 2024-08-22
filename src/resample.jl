@@ -260,7 +260,7 @@ function ta_resample(
     label::LABEL_SIDE = LABEL_LEFT,
 ) where {T<:TimeLike,V}
     isempty(t_array) && return t_array
-    V2 = ta_return_type(f, V)
+    V2 = return_type(f, V)
 
     t₀, tₙ, n = fit_time_interval(t_array, period, origin, Bool(closed))
     closed_left = Bool(closed)

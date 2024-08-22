@@ -52,7 +52,7 @@ function ta_rolling(
     observations::Integer = window,
 ) where {T,V}
     len = length(t_array)
-    V2 = ta_return_type(f, V)
+    V2 = return_type(f, V)
     values = map(ta_value, t_array)
     new_ticks = Vector{TimeTick{T,V2}}(undef, len)
 
@@ -124,7 +124,7 @@ function ta_rolling(
     observations::Integer = 1,
 ) where {T,V}
     len = length(t_array)
-    V2 = ta_return_type(f, V)
+    V2 = return_type(f, V)
     values = map(ta_value, t_array)
     new_ticks = Vector{TimeTick{T,V2}}(undef, len)
 

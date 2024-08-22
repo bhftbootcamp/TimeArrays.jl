@@ -22,9 +22,6 @@ export ta_rolling,
 
 export ta_resample
 
-export ta_nan,
-    ta_return_type
-
 export START_OF_WINDOW,
     END_OF_WINDOW,
     ORIGIN_OF_WINDOW
@@ -59,16 +56,16 @@ ta_nan(::T) where {T} = ta_nan(T)
 
 promote_nan(::Type{T}) where {T} = promote_type(T, typeof(ta_nan(T)))
 
-function ta_return_type(::Type{F}, types::Type...) where {F<:Function}
+function return_type(::Type{F}, types::Type...) where {F<:Function}
     return promote_type(types...)
 end
 
-function ta_return_type(f::Function, types::Type...)
-    return ta_return_type(typeof(f), types...)
+function return_type(f::Function, types::Type...)
+    return return_type(typeof(f), types...)
 end
 
-function ta_return_type(f::Function, ::Type{AbstractVector{T}}) where {T}
-    return ta_return_type(typeof(f), T)
+function return_type(f::Function, ::Type{AbstractVector{T}}) where {T}
+    return return_type(typeof(f), T)
 end
 
 include("interface.jl")

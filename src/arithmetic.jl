@@ -59,9 +59,9 @@ function ta_mergewith(
     T = promote_type(T1, T2)
 
     V = if padding && ta_timestamp(l_array[1]) != ta_timestamp(r_array[1])
-        promote_nan(ta_return_type(f, V1, V2))
+        promote_nan(return_type(f, V1, V2))
     else
-        ta_return_type(f, V1, V2)
+        return_type(f, V1, V2)
     end
 
     if !l_merge && !r_merge || isempty(l_array) || isempty(r_array)
