@@ -114,7 +114,7 @@
 </pre>
     </td>
   </tr>
-</table><h2 id="Values-aggregation"><a class="docs-heading-anchor" href="#Values-aggregation">Values aggregation</a><a id="Values-aggregation-1"></a><a class="docs-heading-anchor-permalink" href="#Values-aggregation" title="Permalink"></a></h2><p>Finally, the old values ​​that fall into the new subinterval can be aggregated by applying some function, such as <code>sum</code>, <code>maximum</code>, <code>minimum</code>, <code>mean</code>, <code>median</code>, etc.</p><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_resample" href="#TimeArrays.ta_resample"><code>TimeArrays.ta_resample</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">ta_resample(f::Function, t_array::TimeArray{T,V}, period::PeriodLike; kw...) -&gt; TimeArray</code></pre><p>Brings the values of <code>t_array</code> to a new time grid with new <code>period</code> using the function <code>f</code> on intermediate values of the old grid.</p><p>Function <code>f</code> must accept a vector with elements of type <code>V</code> as input and return a new value, which will be assigned to the corresponding timestamp of the each window. If it is impossible to calculate a new value based on the received vector (for example, the vector is empty), then the <code>NaN</code> value or an equivalent value (for custom types) must be returned.</p><p><strong>Keyword arguments</strong></p><ul><li><code>origin::ORIGIN_TYPE = ORIGIN_OF_WINDOW</code>: Start of new grid (Possible values: <code>ORIGIN_OF_WINDOW</code>, <code>START_OF_WINDOW</code>, <code>END_OF_WINDOW</code>).</li><li><code>closed::CLOSED_SIDE = CLOSED_LEFT</code>: Closed side of the half-open subintervals of new grid (Possible values: <code>CLOSED_LEFT</code>, <code>CLOSED_RIGHT</code>).</li><li><code>label::LABEL_SIDE = LABEL_LEFT</code>: Label side of the subintervals of new grid (Possible values: <code>LABEL_LEFT</code>, <code>LABEL_RIGHT</code>).</li></ul><p>For more information see <a href="#resample"><code>resample section</code></a>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; t_array = TimeArray{Int64,Int64}([(i, i) for i in 3:13])
+</table><h2 id="Values-aggregation"><a class="docs-heading-anchor" href="#Values-aggregation">Values aggregation</a><a id="Values-aggregation-1"></a><a class="docs-heading-anchor-permalink" href="#Values-aggregation" title="Permalink"></a></h2><p>Finally, the old values ​​that fall into the new subinterval can be aggregated by applying some function, such as <code>sum</code>, <code>maximum</code>, <code>minimum</code>, <code>mean</code>, <code>median</code>, etc.</p><h2 id="API"><a class="docs-heading-anchor" href="#API">API</a><a id="API-1"></a><a class="docs-heading-anchor-permalink" href="#API" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="TimeArrays.ta_resample" href="#TimeArrays.ta_resample"><code>TimeArrays.ta_resample</code></a> — <span class="docstring-category">Function</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">ta_resample(f::Function, t_array::TimeArray{T,V}, period::PeriodLike; kw...) -&gt; TimeArray</code></pre><p>Brings the values of <code>t_array</code> to a new time grid with new <code>period</code> using the function <code>f</code> on intermediate values of the old grid.</p><p>Function <code>f</code> must accept a vector with elements of type <code>V</code> as input and return a new value, which will be assigned to the corresponding timestamp of the each window. If it is impossible to calculate a new value based on the received vector (for example, the vector is empty), then the <code>NaN</code> value or an equivalent value (for custom types) must be returned.</p><p><strong>Keyword arguments</strong></p><ul><li><code>origin::ORIGIN_TYPE = ORIGIN_OF_WINDOW</code>: Start of new grid (Possible values: <code>ORIGIN_OF_WINDOW</code>, <code>START_OF_WINDOW</code>, <code>END_OF_WINDOW</code>).</li><li><code>closed::CLOSED_SIDE = CLOSED_LEFT</code>: Closed side of the half-open subintervals of new grid (Possible values: <code>CLOSED_LEFT</code>, <code>CLOSED_RIGHT</code>).</li><li><code>label::LABEL_SIDE = LABEL_LEFT</code>: Label side of the subintervals of new grid (Possible values: <code>LABEL_LEFT</code>, <code>LABEL_RIGHT</code>).</li></ul><p>For more information see <a href="#resample"><code>resample section</code></a>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; t_array = TimeArray{Int64,Int64}([(i, i) for i in 3:13])
 11-element TimeArray{Int64, Int64}:
  TimeTick(3, 3)
  TimeTick(4, 4)
@@ -129,41 +129,41 @@
  TimeTick(13, 13)
 
 julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_LEFT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(0, 3.0)
- TimeTick(4, 22.0)
- TimeTick(8, 38.0)
- TimeTick(12, 25.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(0, 3)
+ TimeTick(4, 22)
+ TimeTick(8, 38)
+ TimeTick(12, 25)
 
 julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_LEFT, label = LABEL_RIGHT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(4, 3.0)
- TimeTick(8, 22.0)
- TimeTick(12, 38.0)
- TimeTick(16, 25.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(4, 3)
+ TimeTick(8, 22)
+ TimeTick(12, 38)
+ TimeTick(16, 25)
 
 julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_LEFT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(0, 7.0)
- TimeTick(4, 26.0)
- TimeTick(8, 42.0)
- TimeTick(12, 13.0)
+4-element TimeArray{Int64, Int64}:
+ TimeTick(0, 7)
+ TimeTick(4, 26)
+ TimeTick(8, 42)
+ TimeTick(12, 13)
 
 julia&gt; ta_resample(sum, t_array, 4, closed = CLOSED_RIGHT, label = LABEL_RIGHT)
-4-element TimeArray{Int64, Float64}:
- TimeTick(4, 7.0)
- TimeTick(8, 26.0)
- TimeTick(12, 42.0)
- TimeTick(16, 13.0)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; using Dates
+4-element TimeArray{Int64, Int64}:
+ TimeTick(4, 7)
+ TimeTick(8, 26)
+ TimeTick(12, 42)
+ TimeTick(16, 13)</code></pre><pre><code class="language-julia-repl hljs">julia&gt; using Dates
 
-julia&gt; t_array = TimeArray{DateTime,Int64}([
-           TimeTick(DateTime(&quot;2024-01-01&quot;), 1),
-           TimeTick(DateTime(&quot;2024-01-02&quot;), 2),
-           TimeTick(DateTime(&quot;2024-01-03&quot;), 3),
-           TimeTick(DateTime(&quot;2024-01-09&quot;), 4),
-           TimeTick(DateTime(&quot;2024-01-12&quot;), 5),
-           TimeTick(DateTime(&quot;2024-01-13&quot;), 6),
-           TimeTick(DateTime(&quot;2024-01-20&quot;), 7),
+julia&gt; t_array = TimeArray{DateTime,Float64}([
+           TimeTick(DateTime(&quot;2024-01-01&quot;), 1.0),
+           TimeTick(DateTime(&quot;2024-01-02&quot;), 2.0),
+           TimeTick(DateTime(&quot;2024-01-03&quot;), 3.0),
+           TimeTick(DateTime(&quot;2024-01-09&quot;), 4.0),
+           TimeTick(DateTime(&quot;2024-01-12&quot;), 5.0),
+           TimeTick(DateTime(&quot;2024-01-13&quot;), 6.0),
+           TimeTick(DateTime(&quot;2024-01-20&quot;), 7.0),
        ]);
 
 julia&gt; ta_resample(x -&gt; isempty(x) ? NaN : maximum(x), t_array, Day(3))
@@ -174,4 +174,4 @@ julia&gt; ta_resample(x -&gt; isempty(x) ? NaN : maximum(x), t_array, Day(3))
  TimeTick(2024-01-10T00:00:00, 5.0)
  TimeTick(2024-01-13T00:00:00, 6.0)
  TimeTick(2024-01-16T00:00:00, NaN)
- TimeTick(2024-01-19T00:00:00, 7.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/b5726b0bcede06facdb70f007a9f09ad6c6f594c/src/resample.jl#L169-L253">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../rolling/">« Rolling window</a><a class="docs-footer-nextpage" href="../custom_types/">Custom types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Thursday 1 August 2024 18:49">Thursday 1 August 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ TimeTick(2024-01-19T00:00:00, 7.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/bhftbootcamp/TimeArrays.jl/blob/6f24b762b0b00370ddb18283c5818ada58d510bc/src/resample.jl#L169-L253">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../rolling/">« Rolling window</a><a class="docs-footer-nextpage" href="../custom_types/">Custom types »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.6.0 on <span class="colophon-date" title="Thursday 22 August 2024 15:56">Thursday 22 August 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
