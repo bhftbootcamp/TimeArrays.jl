@@ -197,7 +197,7 @@ function w_avg(p::AbstractVector{Trade})
     return sum(x -> x.price * x.volume, p) / sum(x -> x.volume, p)
 end
 
-TimeArrays.return_type(::typeof(w_avg), ::Type{T}) where {T<:Trade} = Float64
+TimeArrays.return_type(::typeof(w_avg), ::Type{Trade}) = Float64
 ```
 
 ```julia-repl
