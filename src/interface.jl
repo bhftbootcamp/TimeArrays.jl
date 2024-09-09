@@ -433,7 +433,7 @@ julia> TimeArray{Date,Int64}(values)
  TimeTick(2024-01-03, 1)
 ```
 """
-function TimeArray(::AbstractVector) end
+TimeArray(::AbstractVector)
 
 ta_values(x::TimeArray) = x.values
 
