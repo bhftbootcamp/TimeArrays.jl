@@ -38,6 +38,14 @@ export LABEL_LEFT,
 using Dates
 using Statistics
 
+struct TimeArraysError <: Exception
+    message::String
+end
+
+function Base.showerror(io::IO, e::TimeArraysError)
+    print(io, "TimeArraysError: ", e.message)
+end
+
 """
     TimeLike <: Union{Dates.TimeType,Real}
 
@@ -55,6 +63,7 @@ const PeriodLike = Union{Real,Period}
 ta_nan(::AbstractArray{T}) where {T} = ta_nan(T)
 ta_nan(::Type{<:Complex}) = Complex(NaN, NaN)
 ta_nan(::Type{<:Number})  = NaN
+ta_nan(::Type{T}) where {T} = throw(TimeArraysError("To use this method, you need to define new `TimeArrays.ta_nan(::Type{<:$T})`, which will return a `NaN` object of type $T (like `Foo(NaN, NaN, ...)`)."))
 ta_nan(::T) where {T} = ta_nan(T)
 
 promote_nan(::Type{T}) where {T} = promote_type(T, typeof(ta_nan(T)))
