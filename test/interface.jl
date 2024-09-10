@@ -192,6 +192,10 @@ end
         @test TimeArray{Time,Float64}(time_anything) == TimeArray{Time,Float64}(reverse(time_anything))
 
         @test TimeArray{Int64,Float64}(value_anything) == TimeArray{Int64,Float64}(reverse(value_anything))
+
+        @test TimeArray([]) == TimeArray{TimeArrays.TimeLike,Any}([])
+        
+        @test TimeArray{DateTime,Float64}([]) == TimeArray{DateTime,Float64}([])
     end
 
     @testset "Case №4: TimeArray from timestamps and values" begin

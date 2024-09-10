@@ -319,11 +319,13 @@ julia> TimeArray{Float64,Float64}(TimeTickIter(5))
 ```
 """
 function TimeArray(iter)
-    return TimeArray(map(item -> convert(TimeTick, item), iter))
+    t = map(item -> convert(TimeTick, item), iter)
+    return isempty(t) ? TimeArray{TimeLike,Any}() : TimeArray(t)
 end
 
 function TimeArray{T,V}(iter) where {T,V}
-    return TimeArray(map(item -> convert(TimeTick{T,V}, item), iter))
+    t = map(item -> convert(TimeTick{T,V}, item), iter)
+    return isempty(t) ? TimeArray{T,V}() : TimeArray{T,V}(t)
 end
 
 """
