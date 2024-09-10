@@ -192,6 +192,10 @@ end
         @test TimeArray{Time,Float64}(time_anything) == TimeArray{Time,Float64}(reverse(time_anything))
 
         @test TimeArray{Int64,Float64}(value_anything) == TimeArray{Int64,Float64}(reverse(value_anything))
+
+        @test TimeArray([]) == TimeArray{TimeArrays.TimeLike,Any}([])
+        
+        @test TimeArray{DateTime,Float64}([]) == TimeArray{DateTime,Float64}([])
     end
 
     @testset "Case №4: TimeArray from timestamps and values" begin
@@ -206,5 +210,32 @@ end
         @test TimeArray(time_timestamps, values) == TimeArray(reverse(time_timestamps), reverse(values))
 
         @test TimeArray(value_timestamps, values) == TimeArray(reverse(value_timestamps), reverse(values))
+    end
+
+    @testset "Case №5: TimeArray from iterator" begin
+        struct TimeTickIter
+            state::Int
+        end
+        
+        Base.length(x::TimeTickIter) = x.state
+        function Base.iterate(x::TimeTickIter, state = 1)
+            return state <= x.state ? (TimeTick(state, state), state + 1) : nothing
+        end
+        
+        @test TimeArray(TimeTickIter(5)) == TimeArray([
+            TimeTick(1, 1),
+            TimeTick(2, 2),
+            TimeTick(3, 3),
+            TimeTick(4, 4),
+            TimeTick(5, 5),
+        ])
+        
+        @test TimeArray{Float64,Float64}(TimeTickIter(5)) == TimeArray([
+            TimeTick(1.0, 1.0)
+            TimeTick(2.0, 2.0)
+            TimeTick(3.0, 3.0)
+            TimeTick(4.0, 4.0)
+            TimeTick(5.0, 5.0)
+        ])
     end
 end
