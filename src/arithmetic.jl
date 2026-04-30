@@ -1,4 +1,4 @@
-# arithmetic
+#__ arithmetic
 
 """
     ta_mergewith(f, l_array::TimeArray, r_array::TimeArray; kw...) -> TimeArray

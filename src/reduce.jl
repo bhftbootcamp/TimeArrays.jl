@@ -1,4 +1,4 @@
-# reduce
+#__ reduce
 
 function Base.reduce(f::Function, t_array::AbstractVector{TimeTick{T,V}}; kw...) where {T,V}
     return reduce(f, map(ta_value, t_array; kw...))
