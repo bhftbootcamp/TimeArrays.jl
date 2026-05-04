@@ -1,4 +1,4 @@
-# interface
+#__ interface
 
 #__ TimeTick
 
@@ -397,7 +397,7 @@ function TimeArray(timestamp::AbstractVector{T}, values::AbstractVector{V}) wher
 end
 
 """
-    TimeArray(x; timestamp::Symbol=:timestamp, value::Symbol=:value)
+    TimeArray(x; timestamp::Symbol = :timestamp, value::Symbol = :value)
 
 Creates a `TimeArray` from a Tables.jl compatible source or from an iterable.
 
@@ -423,7 +423,7 @@ julia> # From iterable
  TimeTick(2024-01-02, 2.0)
 ```
 """
-function TimeArray(x; timestamp::Symbol=:timestamp, value::Symbol=:value)
+function TimeArray(x; timestamp::Symbol = :timestamp, value::Symbol = :value)
     if Tables.istable(x)
         cols = Tables.columns(x)
         timestamps = Tables.getcolumn(cols, timestamp)

@@ -1,4 +1,4 @@
-# Tables.jl interface for TimeArrays
+#__ Tables
 
 import Tables
 
@@ -57,7 +57,7 @@ end
 Base.length(iter::TimeArrayRowIterator) = length(iter.ta)
 Base.eltype(::TimeArrayRowIterator{T,V}) where {T,V} = TimeArrayRow{T,V}
 
-function Base.iterate(iter::TimeArrayRowIterator, state=1)
+function Base.iterate(iter::TimeArrayRowIterator, state = 1)
     if state > length(iter.ta)
         return nothing
     end

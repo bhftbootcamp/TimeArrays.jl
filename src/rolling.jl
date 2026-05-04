@@ -1,4 +1,4 @@
-# rolling
+#__ rolling
 
 """
     ta_rolling(f::Function, t_array::TimeArray, n::Int; kw...) -> TimeArray

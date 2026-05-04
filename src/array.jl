@@ -1,4 +1,4 @@
-# array
+#__ array
 
 """
     replace(t_array::TimeArray, old_new::Pair...; [, count]) -> TimeArray
